@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('avoirs', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger("fournisseur_id");
+            $table->unsignedBigInteger("departement_id");
             $table->timestamps();
         });
     }

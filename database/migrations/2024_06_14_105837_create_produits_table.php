@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('produits', function (Blueprint $table) {
             $table->id();
+            $table->string("lib");
+            $table->integer("prix");
+            $table->integer("qte");
+            $table->string("photo");
+            $table->unsignedBigInteger("departement_id");
             $table->timestamps();
         });
     }

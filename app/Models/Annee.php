@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Annee extends Model
 {
     use HasFactory;
+
+    protected $fillable=["lib","created_at","updated_at"];
+
+
 }

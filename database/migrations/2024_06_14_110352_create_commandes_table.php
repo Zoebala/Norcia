@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('commandes', function (Blueprint $table) {
             $table->id();
+            $table->integer("qte");
+            $table->unsignedBigInteger("annee_id");
+            $table->unsignedBigInteger("departement_id");
+            $table->unsignedBigInteger("produit_id");
             $table->timestamps();
         });
     }

@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('entrees', function (Blueprint $table) {
             $table->id();
+            $table->integer("qte");
+            $table->integer("prix");
+            $table->unsignedBigInteger("produit_id");
+            $table->unsignedBigInteger("departement_id");
+            $table->unsignedBigInteger("fournisseur_id");
+            $table->unsignedBigInteger("anneer_id");
             $table->timestamps();
         });
     }

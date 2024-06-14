@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('associers', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger("departement_id");
+            $table->unsignedBigInteger("employe_id");
             $table->timestamps();
         });
     }

@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('pointventes', function (Blueprint $table) {
             $table->id();
+            $table->string("lib");
+            $table->string("adresse");
+            $table->string("tel",10)->nullable();
+            $table->json("produit_id");
+            $table->unsignedBigInteger("departement_id");
             $table->timestamps();
         });
     }

@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('vendeurs', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger("employe_id")->nullable();
+            $table->unsignedBigInteger("pointvente_id")->nullable();
+            $table->string("ville");
             $table->timestamps();
         });
     }
