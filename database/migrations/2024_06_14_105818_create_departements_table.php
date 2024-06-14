@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("lib");
             $table->unsignedBigInteger("annee_id");
+            $table->text("description")->nullable();
             $table->timestamps();
         });
     }
