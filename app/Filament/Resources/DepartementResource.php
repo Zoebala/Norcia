@@ -5,10 +5,13 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Annee;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\Departement;
 use Filament\Resources\Resource;
+use Illuminate\Support\Facades\DB;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Wizard;
 use Filament\Tables\Columns\TextColumn;
@@ -60,10 +63,23 @@ class DepartementResource extends Resource
                             ->columnSpan(1),
                             TextInput::make('lib')
                                 ->label("Departement")
-                                ->unique(ignoreRecord:true,table: Departement::class)
+                                // ->unique(ignoreRecord:true,table: Departement::class)
                                 ->required()
                                 ->placeholder("Ex: Informatique")
                                 ->maxLength(255)
+                                ->live()
+                                ->afterStateUpdated(function(Get $get, Set $set){
+                                    if(filled($get("annee_id")) && filled($get("lib"))){
+
+                                        $Departement=Departement::where("lib",$get("lib"))
+                                                                ->where("annee_id",$get("annee_id"))->exists();
+                                        if($Departement){
+                                            $set("annee_id",null);
+                                            $set("lib",null);
+                                            Notification::make()->title("Cet Enregistrement existe déjà pour l'année indiquée !")->danger()->send();
+                                        }
+                                    }
+                                })
                                 ->columnSpan(1),
 
                         ]),
