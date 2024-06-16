@@ -6,6 +6,7 @@ use App\Models\Annee;
 use App\Models\Avoir;
 use App\Models\Entree;
 use App\Models\Sortie;
+use App\Models\Produit;
 use App\Models\Associer;
 use App\Models\Concerner;
 use App\Models\Pointvente;
@@ -29,6 +30,10 @@ class Departement extends Model
     {
         return $this->belongsToMany(Pointvente::class,'concerners')->withTimestamps();
     }
+    // public function produits():HasMany
+    // {
+    //     return $this->hasMany(Produit::class);
+    // }
     public function associers():HasMany
     {
         return $this->HasMany(Associer::class);

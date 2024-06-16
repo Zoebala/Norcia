@@ -14,7 +14,7 @@ class Concerner extends Model
 
     protected $fillable=["departement_id","pointvente_id","produit_id","created_at","updated_at"];
 
-    protected $casts=[
+     protected $casts=[
         "produit_id"=>"json",
     ];
 

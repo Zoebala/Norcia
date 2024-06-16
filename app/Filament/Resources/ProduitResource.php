@@ -21,6 +21,7 @@ use Filament\Notifications\Notification;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
+use Filament\Tables\Columns\ToggleColumn;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ProduitResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -63,7 +64,9 @@ class ProduitResource extends Resource
                         Select::make("departement_id")
                         ->label("Departement")
                         ->options(function(){
-                            return Departement::where("annee_id",session("Annee_id") ?? 1)->pluck("lib","id");
+                            return Departement::where("annee_id",session("Annee_id") ?? 1)
+                                                ->whereActif(1)
+                                                ->pluck("lib","id");
                         })->preload()
                         ->searchable()
                         ->required()
@@ -129,10 +132,13 @@ class ProduitResource extends Resource
         return $table
             ->columns([
                 //
+                ToggleColumn::make("actif")
+                ->label("Actif ?"),
                 TextColumn::make("annee.lib")
                 ->label("Année")
                 ->searchable()
-                ->sortable(),
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make("departement.lib")
                 ->label("Departement")
                 ->searchable()

@@ -9,16 +9,19 @@ use App\Models\Produit;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Forms\Form;
+use App\Models\Concerner;
 use App\Models\Pointvente;
 use Filament\Tables\Table;
 use App\Models\Departement;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Columns\ToggleColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PointventeResource\Pages;
@@ -92,6 +95,8 @@ class PointventeResource extends Resource
         return $table
             ->columns([
                 //
+                ToggleColumn::make("actif")
+                ->label("Actif ?"),
                 TextColumn::make("annee.lib")
                 ->label("Annee")
                 ->searchable()
@@ -123,6 +128,52 @@ class PointventeResource extends Resource
 
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\Action::make("Ajouter Produit(s)")
+                    ->icon("heroicon-o-plus-circle")
+                    ->form([
+                        Select::make("departement_id")
+                        ->label("Departement")
+                        ->options(function(Pointvente $Pv){
+
+                            return Departement::join("concerners","concerners.departement_id","departements.id")
+                                            ->join("pointventes","pointventes.id","concerners.pointvente_id")
+                                            ->where("departements.annee_id",session("Annee_id") ?? 1)
+                                            ->where("concerners.pointvente_id",$Pv->id)
+                                            ->where("departements.actif",1)
+                                            ->pluck("departements.lib","departements.id");
+                        })
+                        ->required()
+                        ->preload()
+                        ->searchable()
+                        ->live(),
+                        Select::make("produit_id")
+                        ->label("Produit(s)")
+                        ->multiple()
+
+                        ->options(function(Get $get){
+                            return Produit::whereDepartement_id($get("departement_id"))->whereActif(1)->pluck("lib","id");
+                        })
+                        ->preload()
+                        ->searchable()
+                        ->required()
+                        ->live(),
+                    ])->modalWidth(MaxWidth::Medium)
+                    ->modalIcon("heroicon-o-shopping-bag")
+                    ->action(function(array $data,Pointvente $Pv){
+
+                        //identification de l'enregistrement dans la table concerners et modification de l'enregistrement
+                        Concerner::Where("pointvente_id",$Pv->id)
+                                  ->Where("departement_id",$data["departement_id"])
+                                  ->update([
+                                        "produit_id" => $data["produit_id"],
+                                  ]);
+                        Notification::make()
+                        ->title("Affectation des produits effectuée avec succès")
+                        ->success()
+                        ->send();
+                        // return redirect()->route("")
+
+                    }),
                 ])->button()->label("Actions"),
             ])
             ->bulkActions([

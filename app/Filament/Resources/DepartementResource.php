@@ -18,6 +18,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Columns\ToggleColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\Wizard\Step;
 use Filament\Forms\Components\MarkdownEditor;
@@ -99,10 +100,13 @@ class DepartementResource extends Resource
         return $table
             ->columns([
                 //
+                ToggleColumn::make("actif")
+                ->label("Actif ?"),
                 TextColumn::make('annee.lib')
                 ->label("Année")
                 ->searchable()
-                ->sortable(),
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('lib')
                 ->label("Departement")
                 ->searchable()
