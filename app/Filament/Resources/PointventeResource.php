@@ -15,7 +15,10 @@ use App\Models\Departement;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
+use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PointventeResource\Pages;
@@ -60,8 +63,13 @@ class PointventeResource extends Resource
                         ->maxlength(25)
                         ->live()
                         ->afterStateUpdated(function(Get $get, Set $set){
-                            if(filled($get("annee_id") && filled($get("departement_id")) && filled($get("lib")))){
-                                dd("ils sont tous remplis...");
+                            if(filled($get("annee_id") && filled($get("lib")))){
+                                $Pv=Pointvente::whereAnnee_id($get("annee_id"))->whereLib($get("lib"))->exists();
+                                if($Pv){
+                                    $set("annee_id",null);
+                                    $set("lib",null);
+                                    Notification::make()->title("Ce Point de vente existe déjà pour l'année indiquée !")->danger()->send();
+                                }
                             }
                         })
                         ->required(),
@@ -83,12 +91,38 @@ class PointventeResource extends Resource
         return $table
             ->columns([
                 //
+                TextColumn::make("annee.lib")
+                ->label("Annee")
+                ->searchable()
+                ->sortable(),
+                TextColumn::make("lib")
+                ->label("Point de Vente")
+                ->searchable()
+                ->sortable(),
+                TextColumn::make("tel")
+                ->label("Téléphone")
+                ->searchable()
+                ->sortable(),
+                TextColumn::make("adresse")
+                ->label("Adresse")
+                ->searchable()
+                ->sortable(),
+                TextColumn::make("created_at")
+                ->label("Créé le ")
+                ->dateTime("d/m/Y à H:i:s")
+                ->searchable()
+                ->sortable(),
+
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                ActionGroup::make([
+
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])->button()->label("Actions"),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
