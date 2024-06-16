@@ -7,6 +7,7 @@ use App\Models\Stock;
 use App\Models\Entree;
 use App\Models\Sortie;
 use App\Models\Commande;
+use App\Models\Pointvente;
 use App\Models\Departement;
 use App\Models\Ravitaillement;
 use Illuminate\Database\Eloquent\Model;
@@ -18,7 +19,7 @@ class Produit extends Model
 {
     use HasFactory;
 
-    protected $fillable=["lib","prix","qte","photo","departement_id","annee_id","created_at","updated_at"];
+    protected $fillable=["lib","prix","qte","photo","actif","departement_id","annee_id","created_at","updated_at"];
 
 
     public function departement():BelongsTo
@@ -28,6 +29,11 @@ class Produit extends Model
     public function annee():BelongsTo
     {
         return $this->belongsTo(Annee::class);
+    }
+
+    public function pointventes():BelongsToMany
+    {
+        return $this->belongsToMany(Pointvente::class,'concerners')->withTimestamps();
     }
 
     public function entrees():HasMany

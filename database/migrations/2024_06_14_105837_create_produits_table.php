@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string("photo");
             $table->unsignedBigInteger("departement_id");
             $table->unsignedBigInteger("annee_id");
+            $table->boolean("actif")->default(true);
             $table->timestamps();
         });
     }

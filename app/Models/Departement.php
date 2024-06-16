@@ -19,7 +19,7 @@ class Departement extends Model
 {
     use HasFactory;
 
-    protected $fillable=["lib","annee_id","created_at","updated_at","description"];
+    protected $fillable=["lib","annee_id","actif","created_at","updated_at","description"];
 
     public function annee():BelongsTo
     {

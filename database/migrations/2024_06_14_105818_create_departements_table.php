@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string("lib");
             $table->unsignedBigInteger("annee_id");
             $table->text("description")->nullable();
+            $table->boolean("actif")->default(true);
             $table->timestamps();
         });
     }

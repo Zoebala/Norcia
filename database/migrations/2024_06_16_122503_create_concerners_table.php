@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger("departement_id");
             $table->unsignedBigInteger("pointvente_id");
+            $table->json("produit_id");
             $table->timestamps();
         });
     }

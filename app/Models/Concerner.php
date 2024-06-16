@@ -12,7 +12,11 @@ class Concerner extends Model
 {
     use HasFactory;
 
-    protected $fillable=["departement_id","pointvente_id","created_at","updated_at"];
+    protected $fillable=["departement_id","pointvente_id","produit_id","created_at","updated_at"];
+
+    protected $casts=[
+        "produit_id"=>"json",
+    ];
 
     // public function departements():BelongsToMany
     // {

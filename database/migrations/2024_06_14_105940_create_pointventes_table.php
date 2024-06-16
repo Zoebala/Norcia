@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string("adresse");
             $table->string("tel",10)->nullable();
             $table->unsignedBigInteger("annee_id");
+            $table->boolean("actif")->default(true);
             $table->timestamps();
         });
     }

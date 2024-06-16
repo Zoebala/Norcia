@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Annee;
+use App\Models\Produit;
 use App\Models\Vendeur;
 use App\Models\Concerner;
 use App\Models\Pointvente;
@@ -17,11 +18,9 @@ class Pointvente extends Model
 {
     use HasFactory;
 
-    protected $fillable=["lib","adresse","tel","annee_id","created_at","updated_at"];
+    protected $fillable=["lib","adresse",'actif',"tel","annee_id","created_at","updated_at"];
 
-    protected $casts=[
-        "produit_id"=>"json",
-    ];
+   
 
     public function annee():BelongsTo
     {
@@ -31,6 +30,10 @@ class Pointvente extends Model
     public function departements():BelongsToMany
     {
         return $this->belongsToMany(Departement::class,'concerners')->withTimestamps();
+    }
+    public function produits():BelongsToMany
+    {
+        return $this->belongsToMany(Produit::class,'concerners')->withTimestamps();
     }
 
     public function vendeurs():HasMany
