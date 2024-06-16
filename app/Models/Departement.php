@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Departement extends Model
 {
@@ -24,9 +25,9 @@ class Departement extends Model
     {
         return $this->BelongsTo(Annee::class);
     }
-    public function concerners():HasMany
+    public function pointventes():BelongsToMany
     {
-        return $this->HasMany(Concerner::class);
+        return $this->belongsToMany(Pointvente::class,'concerners')->withTimestamps();
     }
     public function associers():HasMany
     {

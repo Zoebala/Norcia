@@ -6,10 +6,12 @@ use App\Models\Annee;
 use App\Models\Vendeur;
 use App\Models\Concerner;
 use App\Models\Pointvente;
+use App\Models\Departement;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Pointvente extends Model
 {
@@ -26,9 +28,9 @@ class Pointvente extends Model
         return $this->belongsTo(Annee::class);
     }
 
-    public function concerners():HasMany
+    public function departements():BelongsToMany
     {
-        return $this->hasMany(Concerner::class);
+        return $this->belongsToMany(Departement::class,'concerners')->withTimestamps();
     }
 
     public function vendeurs():HasMany

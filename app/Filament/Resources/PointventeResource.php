@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PointventeResource\Pages;
 use App\Filament\Resources\PointventeResource\RelationManagers;
+use App\Filament\Resources\PointventeResource\RelationManagers\DepartementsRelationManager;
 
 class PointventeResource extends Resource
 {
@@ -135,6 +136,7 @@ class PointventeResource extends Resource
     {
         return [
             //
+            DepartementsRelationManager::class,
         ];
     }
 

@@ -14,12 +14,12 @@ class Concerner extends Model
 
     protected $fillable=["departement_id","pointvente_id","created_at","updated_at"];
 
-    public function departement():BelongsToMany
-    {
-        return $this->belongsToMany(Departement::class)->withTimestamps();
-    }
-    public function pointvente():BelongsToMany
-    {
-        return $this->belongsToMany(Pointvente::class)->withTimestamps();
-    }
+    // public function departements():BelongsToMany
+    // {
+    //     return $this->belongsToMany(Departement::class)->withTimestamps();
+    // }
+    // public function pointventes():BelongsToMany
+    // {
+    //     return $this->belongsToMany(Pointvente::class)->withTimestamps();
+    // }
 }
