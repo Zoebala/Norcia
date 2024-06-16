@@ -27,7 +27,7 @@ class AnneeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
     protected static ?string $navigationGroup ="NB Management";
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 10;
     public static function getNavigationBadge():string
     {
         return static::getModel()::count();
@@ -92,13 +92,7 @@ class AnneeResource extends Resource
             ])
              ->HeaderActions([
                 Action::make("annee")
-                // ->label(function(){
-                //     if(Auth()->user()->hasRole("CANDIDAT"))
-                //         return "Choisir une année Académique";
-                //     else
-                //         return "Définition de l'année de travail";
 
-                // })
                 ->label("Définition de l'année de travail")
                 ->form([
                     Select::make("annee")

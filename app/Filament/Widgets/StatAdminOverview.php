@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Produit;
 use App\Models\Departement;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
@@ -19,6 +20,11 @@ class StatAdminOverview extends BaseWidget
             ->color("success")
             ->chart([34,2,5,23])
             ->Icon("heroicon-o-home-modern"),
+            Stat::make("Produits", Produit::where("annee_id",session("Annee_id")??1)->count())
+            ->description("Nos Produits")
+            ->color("success")
+            ->chart([34,2,5,23])
+            ->Icon("heroicon-o-shopping-bag"),
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Annee;
 use App\Models\Stock;
 use App\Models\Entree;
 use App\Models\Sortie;
@@ -17,12 +18,16 @@ class Produit extends Model
 {
     use HasFactory;
 
-    protected $fillable=["lib","prix","qte","photo","departement_id","created_at","updated_at"];
+    protected $fillable=["lib","prix","qte","photo","departement_id","annee_id","created_at","updated_at"];
 
 
     public function departement():BelongsTo
     {
         return $this->belongsTo(Departement::class);
+    }
+    public function annee():BelongsTo
+    {
+        return $this->belongsTo(Annee::class);
     }
 
     public function entrees():HasMany

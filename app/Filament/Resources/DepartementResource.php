@@ -31,7 +31,7 @@ class DepartementResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
     protected static ?string $navigationGroup ="NB Management";
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 20;
     public static function getNavigationBadge():string
     {
         return static::getModel()::where("annee_id",session("Annee_id")??1)->count();

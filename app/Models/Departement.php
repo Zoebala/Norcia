@@ -7,6 +7,7 @@ use App\Models\Avoir;
 use App\Models\Entree;
 use App\Models\Sortie;
 use App\Models\Associer;
+use App\Models\Concerner;
 use App\Models\Pointvente;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -23,9 +24,9 @@ class Departement extends Model
     {
         return $this->BelongsTo(Annee::class);
     }
-    public function pointventes():HasMany
+    public function concerners():HasMany
     {
-        return $this->HasMany(Pointvente::class);
+        return $this->HasMany(Concerner::class);
     }
     public function associers():HasMany
     {
