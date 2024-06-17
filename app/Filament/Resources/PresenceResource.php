@@ -96,7 +96,7 @@ class PresenceResource extends Resource
                     ->placeholder("N'est pas encore parti(e)")
                     ->sortable(),
                 TextColumn::make('status')
-                    // ->label("Prénom")
+                    ->label("Statut")
                     ->badge()
                     ->color(function(String $state){
                         return match($state){
