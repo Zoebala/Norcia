@@ -10,11 +10,13 @@ use App\Models\Produit;
 use App\Models\Associer;
 use App\Models\Concerner;
 use App\Models\Pointvente;
+use App\Models\Fournisseur;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
 
 class Departement extends Model
 {
@@ -31,7 +33,10 @@ class Departement extends Model
         return $this->belongsToMany(Pointvente::class,'concerners')->withTimestamps();
     }
 
-   
+    public function fournisseurs():BelongsToMany
+    {
+        return $this->belongsToMany(Fournisseur::class,'avoirs')->withTimestamps();
+    }
     public function associers():HasMany
     {
         return $this->HasMany(Associer::class);

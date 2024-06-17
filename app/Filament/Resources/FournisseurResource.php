@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\FournisseurResource\Pages;
 use App\Filament\Resources\FournisseurResource\RelationManagers;
+use App\Filament\Resources\FournisseurResource\RelationManagers\DepartementsRelationManager;
 
 class FournisseurResource extends Resource
 {
@@ -105,6 +106,7 @@ class FournisseurResource extends Resource
     {
         return [
             //
+            DepartementsRelationManager::class,
         ];
     }
 

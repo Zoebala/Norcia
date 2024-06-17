@@ -15,12 +15,6 @@ class Avoir extends Model
     protected $fillable=["departement_id","fournisseur_id","created_at","updated_at"];
 
 
-    public function departements():BelongsToMany
-    {
-        return $this->belongsToMany(Departement::class)->withTimestamps();
-    }
-    public function fournisseurs():BelongsToMany
-    {
-        return $this->belongsToMany(Fournisseur::class)->withTimestamps();
-    }
+
+  
 }
