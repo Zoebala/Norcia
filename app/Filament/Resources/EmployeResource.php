@@ -9,10 +9,12 @@ use App\Models\Employe;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use App\Models\Fonction;
+use App\Models\Presence;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Group;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Wizard;
@@ -349,6 +351,130 @@ class EmployeResource extends Resource
 
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\Action::make(name: 'présent(e)')
+                    ->icon('heroicon-o-check')
+                    ->color('success')
+                    ->action(function(Employe $employe){
+
+                        //vérifie si l'employé existe déjà
+                        $check=Presence::whereRaw("employe_id=$employe->id AND DATE(created_at)=DATE(now())")->first();
+                        //vérifie si l'employé est absent(e)
+                        $check1=Presence::whereRaw("employe_id=$employe->id AND DATE(created_at)=DATE(now()) AND BtnArrivee=0")->exists();
+                        // dd($check1);
+
+                        if($check==null){
+
+                            Presence::create([
+                                'employe_id' => $employe->id,
+                                'arrivee' => now(),
+                                'BtnArrivee' => 1,
+                                'status' => 'présent(e)',
+                                'annee_id' => session('Annee_id') ?? 1,
+                            ]);
+
+                            Notification::make()
+                            ->title("Présence de l'employé(e) $employe->nom $employe->postnom signalée avec succès")
+                            ->success()
+                            ->send();
+                            //on vérifie si l'employé n'a pas déjà été déclaré(e) comme absent(e)
+                            return redirect()->route('filament.admin.resources.presences.index');
+                        }elseif($check1){
+
+                                Presence::whereRaw("employe_id=$employe->id AND DATE(created_at)=DATE(now()) AND BtnArrivee=0")->delete();
+                                Presence::create([
+                                    'employe_id' => $employe->id,
+                                    'arrivee' => now(),
+                                    'BtnArrivee' => 1,
+                                    'status' => 'présent(e)',
+                                    'annee_id' => session('Annee_id') ?? 1,
+                                ]);
+
+                                Notification::make()
+                                ->title("Présence de l'employé(e) $employe->nom $employe->postnom signalée avec succès")
+                                ->success()
+                                ->send();
+                                return redirect()->route('filament.admin.resources.presences.index');
+                        }else{
+
+                                Notification::make()
+                                ->title("l'employé $employe->nom $employe->postnom est déjà présent(e)")
+                                ->warning()
+                                ->send();
+                        }
+
+
+                    }),
+                    Tables\Actions\Action::make(name: 'Absent(e)')
+                    ->color('danger')
+                    ->icon('heroicon-o-x-mark')
+                    ->form([
+                        TextInput::make("Observation")
+                        ->label("Indiquez la raison de votre absence")
+                        ->maxLength("25")
+
+                        ->required()
+                        ->datalist(
+                            [
+
+                                "malade" =>"malade",
+                                "en vancances"=>"en vancances",
+                                "empêché " =>"empêché",
+                            ]
+                        )
+
+                    ])
+                    ->action(function(Employe $employe, array $data){
+
+                        //on vérifie si l'employé n'a pas déjà été déclarée comme présent(e)
+                        $check=Presence::whereRaw("employe_id=$employe->id AND DATE(created_at)=DATE(now()) AND BtnArrivee=1")->exists();
+                        // on vérifie  si l'employe n'a pas déjà été déclaré comme absent(e)
+                        $check2=Presence::whereRaw("employe_id=$employe->id AND DATE(created_at)=DATE(now()) AND BtnArrivee=0")->exists();
+
+                        if($check){
+                            Presence::whereRaw("employe_id=$employe->id AND DATE(created_at)=DATE(now()) AND BtnArrivee=1")->delete();
+                            Presence::create([
+                                'employe_id' => $employe->id,
+                                'arrivee'=>null,
+                                'depart'=>null,
+                                'status'=>'absent(e)',
+                                'Observation' => $data["Observation"],
+                                'BtnArrivee' => 0,
+                                'annee_id' => session('Annee_id') ?? 1,
+                            ]);
+
+                            Notification::make()
+                            ->title("l'absence de l'employé $employe->nom $employe->postnom signalée avec succès")
+                            // ->successRedirectUrl("presences.list")
+                            ->success()
+                            ->send();
+                            return redirect()->route('filament.admin.resources.presences.index');
+                        //on vérifie si l'employé n'a pas déjà été déclaré(e) comme absent(e)
+                        }elseif($check2){
+                            Notification::make()
+                            ->title("l'absence de l'employé(e) $employe->nom $employe->postnom a déjà été signalée")
+                            ->warning()
+                            ->send();
+                        }
+                        else{
+                            //si l'employé n'a pas encore été déjà déclaré(e)
+                            Presence::create([
+                                'employe_id' => $employe->id,
+                                'Observation' => $data["Observation"],
+                                'BtnArrivee' => 0,
+                                'status' =>"absent(e)",
+                                'annee_id' => session('Annee_id') ?? 1,
+                            ]);
+                            Notification::make()
+                            ->title("l'absence de l'employé $employe->nom $employe->postnom signalée avec succès")
+                            ->success()
+                            ->send();
+                            return redirect()->route('filament.admin.resources.presences.index');
+
+                        }
+
+                    })
+                    ->modalWidth(MaxWidth::Medium)
+                    ->modalIcon("heroicon-o-chat-bubble-left") ,
                 ])->button()->label("Actions")
             ])
             ->bulkActions([
