@@ -40,7 +40,7 @@ class EmployeResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?string $navigationLabel = 'Employés';
     protected static ?string $navigationGroup ="NB Management";
-    protected static ?int $navigationSort = 60;
+    protected static ?int $navigationSort = 26;
     public static function getNavigationBadge():string
     {
         return static::getModel()::where("annee_id",session("Annee_id")??1)->count();

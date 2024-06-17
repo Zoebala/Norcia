@@ -32,7 +32,7 @@ class PresenceResource extends Resource
 
 
     protected static ?string $navigationGroup ="NB Management";
-    protected static ?int $navigationSort = 80;
+    protected static ?int $navigationSort = 27;
     public static function getNavigationBadgeColor():string
     {
         return "success";
@@ -86,12 +86,14 @@ class PresenceResource extends Resource
                 TextColumn::make('arrivee')
                     ->label("Date/Heure Arrivée")
                     ->dateTime("d/m/Y H:i:s")
+                    ->placeholder("N'est pas venu(e)")
                     ->sortable(),
                 ToggleColumn::make('BtnDepart')
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('depart')
                     ->label("Date/Heure Depart")
                     ->dateTime("d/m/Y H:i:s")
+                    ->placeholder("N'est pas encore parti(e)")
                     ->sortable(),
                 TextColumn::make('status')
                     // ->label("Prénom")

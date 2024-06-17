@@ -36,7 +36,7 @@ class FonctionResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-briefcase';
     protected static ?string $navigationLabel = 'Fonctions';
     protected static ?string $navigationGroup ="NB Management";
-    protected static ?int $navigationSort = 50;
+    protected static ?int $navigationSort = 25;
     public static function getNavigationBadge():string
     {
         return static::getModel()::count();

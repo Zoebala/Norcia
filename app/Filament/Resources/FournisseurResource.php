@@ -21,7 +21,7 @@ class FournisseurResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-truck';
     protected static ?string $navigationGroup ="NB Management";
-    protected static ?int $navigationSort = 70;
+    protected static ?int $navigationSort = 28;
     public static function getNavigationBadge():string
     {
         return static::getModel()::count();

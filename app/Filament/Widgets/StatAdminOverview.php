@@ -4,6 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Models\Employe;
 use App\Models\Produit;
+use App\Models\Presence;
 use App\Models\Pointvente;
 use App\Models\Departement;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -37,6 +38,11 @@ class StatAdminOverview extends BaseWidget
             ->color("success")
             ->chart([34,2,5,23])
             ->Icon("heroicon-o-user-group"),
+            Stat::make("Présence Journalière", Presence::whereRaw("Date(presences.created_at)=DATE(now())")->count())
+            ->description("Nombre d'employés présent")
+            ->color("success")
+            ->chart([34,2,5,23])
+            ->Icon("heroicon-o-calendar-days"),
         ];
     }
 
