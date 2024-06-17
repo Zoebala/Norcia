@@ -26,14 +26,13 @@ return new class extends Migration
             $table->string("adresse")->nullable();
             $table->string("lieu_naissance")->nullable();
             $table->string("pays_naissance")->nullable();
-            // $table->string("position")->nullable();
+            $table->string("position")->nullable();
             $table->date("date_embauche")->nullable();
             $table->string("photo")->nullable();
             $table->string("province")->nullable();
             $table->string("situation_familiale")->nullable();
             $table->integer("nbre_enfant")->nullable();
-            // $table->boolean("remuneration")->default(0);
-            // $table->float("montantrem")->nullable();
+            
             $table->string("qualification")->nullable();
             $table->json("formation_suivie")->nullable();
             $table->json("elements_dossiers")->nullable();

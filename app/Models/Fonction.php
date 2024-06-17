@@ -11,7 +11,7 @@ class Fonction extends Model
 {
     use HasFactory;
 
-    protected $fillable=["lib","created_at","updated_at"];
+    protected $fillable=["lib","description","created_at","updated_at"];
 
     public function employes():HasMany
     {
