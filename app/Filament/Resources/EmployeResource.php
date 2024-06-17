@@ -296,7 +296,10 @@ class EmployeResource extends Resource
                 ->placeholder("Pas de Fonction")
                 ->searchable()
                 ->formatStateUsing(function($state){
-                    return substr($state,0,12)."...";
+                    if(mb_strlen($state)>10)
+                        return substr($state,0,12)."...";
+                    else
+                        return $state;
                 })
                 ->sortable(),
             Tables\Columns\TextColumn::make('matricule')
