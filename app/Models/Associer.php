@@ -14,12 +14,6 @@ class Associer extends Model
 
     protected $fillable=["departement_id","employe_id","created_at","updated_at"];
 
-    public function departements():BelongsToMany
-    {
-        return $this->belongsToMany(Departement::class)->withTimestamps();
-    }
-    public function employes():BelongsToMany
-    {
-        return $this->belongsToMany(Employe::class)->withTimestamps();
-    }
+   
+
 }

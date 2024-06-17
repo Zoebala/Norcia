@@ -6,6 +6,7 @@ use App\Models\Annee;
 use App\Models\Avoir;
 use App\Models\Entree;
 use App\Models\Sortie;
+use App\Models\Employe;
 use App\Models\Produit;
 use App\Models\Associer;
 use App\Models\Concerner;
@@ -37,13 +38,10 @@ class Departement extends Model
     {
         return $this->belongsToMany(Fournisseur::class,'avoirs')->withTimestamps();
     }
-    public function associers():HasMany
+
+    public function employes():BelongsToMany
     {
-        return $this->HasMany(Associer::class);
-    }
-    public function avoirs():HasMany
-    {
-        return $this->HasMany(Avoir::class);
+        return $this->belongsToMany(Employe::class,'associers')->withTimestamps();
     }
     public function sorties():HasMany
     {

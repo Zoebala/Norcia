@@ -31,6 +31,9 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\EmployeResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\EmployeResource\RelationManagers;
+use App\Filament\Resources\EmployeResource\RelationManagers\DepartementsRelationManager;
+
+
 
 class EmployeResource extends Resource
 {
@@ -488,6 +491,7 @@ class EmployeResource extends Resource
     {
         return [
             //
+            DepartementsRelationManager::class,
         ];
     }
 

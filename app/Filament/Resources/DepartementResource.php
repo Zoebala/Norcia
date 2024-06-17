@@ -25,6 +25,7 @@ use Filament\Forms\Components\MarkdownEditor;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\DepartementResource\Pages;
 use App\Filament\Resources\DepartementResource\RelationManagers;
+use App\Filament\Resources\DepartementResource\RelationManagers\EmployesRelationManager;
 use App\Filament\Resources\DepartementResource\RelationManagers\PointventesRelationManager;
 use App\Filament\Resources\DepartementResource\RelationManagers\FournisseursRelationManager;
 
@@ -148,6 +149,7 @@ class DepartementResource extends Resource
             //
             PointventesRelationManager::class,
             FournisseursRelationManager::class,
+            EmployesRelationManager::class,
 
         ];
     }
