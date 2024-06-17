@@ -4,8 +4,11 @@ namespace App\Filament\Resources\PointventeResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Tables;
+use Filament\Forms\Get;
 use Filament\Forms\Form;
+use App\Models\Concerner;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\DB;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Database\Eloquent\Builder;
@@ -41,8 +44,12 @@ class DepartementsRelationManager extends RelationManager
                 ->label("Departement")
                 ->searchable()
                 ->sortable(),
-                // TextColumn::make("produits.lib")
-                // ->label("Produits"),
+                TextColumn::make('produits.lib')
+                ->label("Produit")
+                ->searchable()
+                ->sortable()
+                ->placeholder("Tous les articles")
+               ,
                 TextColumn::make('description')
                     ->label("Description")
                     ->searchable()

@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Produit;
 use App\Models\Pointvente;
 use App\Models\Departement;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -15,15 +18,20 @@ class Concerner extends Model
     protected $fillable=["departement_id","pointvente_id","produit_id","created_at","updated_at"];
 
      protected $casts=[
-        "produit_id"=>"json",
+        "produit_id"=>"array",
     ];
 
-    // public function departements():BelongsToMany
+    // public function produit():BelongsTo
     // {
-    //     return $this->belongsToMany(Departement::class)->withTimestamps();
+    //     return $this->belongsTo(Produit::class);
     // }
-    // public function pointventes():BelongsToMany
-    // {
-    //     return $this->belongsToMany(Pointvente::class)->withTimestamps();
-    // }
+    public function departement():BelongsTo
+    {
+        return $this->belongsTo(Departement::class);
+    }
+    public function pointvente():BelongsTo
+    {
+        return $this->belongsTo(Pointvente::class);
+    }
+
 }

@@ -30,10 +30,8 @@ class Departement extends Model
     {
         return $this->belongsToMany(Pointvente::class,'concerners')->withTimestamps();
     }
-    // public function produits():HasMany
-    // {
-    //     return $this->hasMany(Produit::class);
-    // }
+
+   
     public function associers():HasMany
     {
         return $this->HasMany(Associer::class);
