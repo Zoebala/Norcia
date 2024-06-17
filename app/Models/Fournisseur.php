@@ -12,13 +12,13 @@ class Fournisseur extends Model
 {
     use HasFactory;
 
-    protected $fillable=["nom","adresse","tel","created_at","updated_at"];
+    protected $fillable=["nom","adresse","email","tel","created_at","updated_at"];
 
     public function avoirs():HasMany
     {
         return $this->hasMany(Avoir::class);
     }
-    
+
     public function entrees():HasMany
     {
         return $this->hasMany(Entree::class);
