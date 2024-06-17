@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Employe;
 use App\Models\Produit;
 use App\Models\Pointvente;
 use App\Models\Departement;
@@ -31,6 +32,16 @@ class StatAdminOverview extends BaseWidget
             ->color("success")
             ->chart([34,2,5,23])
             ->Icon("heroicon-o-home-modern"),
+            Stat::make("Employés", Employe::where("annee_id",session("Annee_id")??1)->count())
+            ->description("Nos employés")
+            ->color("success")
+            ->chart([34,2,5,23])
+            ->Icon("heroicon-o-user-group"),
         ];
+    }
+
+    public function getColumns(): int
+    {
+        return 3;
     }
 }

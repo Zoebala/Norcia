@@ -32,7 +32,7 @@ return new class extends Migration
             $table->string("province")->nullable();
             $table->string("situation_familiale")->nullable();
             $table->integer("nbre_enfant")->nullable();
-            
+            $table->boolean("actif")->default(true);
             $table->string("qualification")->nullable();
             $table->json("formation_suivie")->nullable();
             $table->json("elements_dossiers")->nullable();
