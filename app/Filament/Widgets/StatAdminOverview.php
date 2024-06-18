@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Entree;
+use App\Models\Sortie;
 use App\Models\Employe;
 use App\Models\Produit;
 use App\Models\Presence;
@@ -52,6 +53,26 @@ class StatAdminOverview extends BaseWidget
             ->color("success")
             ->chart([34,2,5,23])
             ->Icon("heroicon-o-shopping-cart"),
+            Stat::make("Sorties Journalières", Sortie::join("elementssorties","elementssorties.sortie_id","sorties.id")
+                                                        ->where("annee_id",session("Annee_id")?? 1)
+                                                        ->whereRaw("Date(sorties.created_at)=DATE(now())")->count())
+            ->description("Nombre de Sorties de la journée")
+            ->color("success")
+            ->chart([34,2,5,23])
+            ->Icon("heroicon-o-truck"),
+            Stat::make("Produits Critiques", 0)
+            ->description("Nombre de Produit en rupture de stock")
+            ->color("danger")
+            ->chart([34,2,5,23])
+            ->Icon("heroicon-o-shopping-bag"),
+            Stat::make("Chiffre d'affaire journalier",Sortie::join("elementssorties","elementssorties.sortie_id","sorties.id")
+                                                                ->where("annee_id",session("Annee_id")?? 1)
+                                                                ->whereRaw("Date(sorties.created_at)=DATE(now())")
+                                                                ->SUM("total")." FC")
+            ->description("Chiffre d'affaires journalière")
+            ->color("success")
+            ->chart([34,2,5,23])
+            ->Icon("heroicon-o-truck"),
         ];
     }
 

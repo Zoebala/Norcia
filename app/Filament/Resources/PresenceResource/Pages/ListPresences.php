@@ -27,7 +27,7 @@ class ListPresences extends ListRecords
     {
         $Annee=Annee::where("id",session("Annee_id") ?? 1)->first();
         return [
-            'Today'=>Tab::make()
+            'Aujourd_hui'=>Tab::make()
             ->modifyQueryUsing(function(Builder $query)
             {
                $query->whereRaw("Date(presences.created_at)=DATE(now())");

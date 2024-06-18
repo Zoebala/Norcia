@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Filament\Resources\EntreeResource\Pages;
+namespace App\Filament\Resources\SortieResource\Pages;
 
 use App\Models\Annee;
 use Filament\Actions;
-use App\Models\Entree;
+use App\Models\Sortie;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\EntreeResource;
+use App\Filament\Resources\SortieResource;
 use Filament\Resources\Pages\ListRecords\Tab;
 
-class ListEntrees extends ListRecords
+class ListSorties extends ListRecords
 {
-    protected static string $resource = EntreeResource::class;
+    protected static string $resource = SortieResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make()
-            ->label("Ajouter une entrée")
-            ->icon("heroicon-o-shopping-cart"),
+            ->label("Effectuer une Sortie/vente")
+            ->icon("heroicon-o-truck"),
         ];
     }
 
@@ -33,23 +33,23 @@ class ListEntrees extends ListRecords
                 'Aujourd_hui'=>Tab::make()
                 ->modifyQueryUsing(function(Builder $query)
                 {
-                $query->whereRaw("Date(entrees.created_at)=DATE(now())");
+                   $query->whereRaw("Date(sorties.created_at)=DATE(now())");
 
-                })->badge(Entree::query()
-                 ->join("elementsentrees","elementsentrees.entree_id","entrees.id")
-                ->whereRaw("Date(entrees.created_at)=DATE(now())")->count())
+                })->badge(Sortie::query()
+                 ->join("elementssorties","elementssorties.sortie_id","sorties.id")
+                ->whereRaw("Date(sorties.created_at)=DATE(now())")->count())
                 ->icon("heroicon-o-users"),
                 "$Annee->lib"=>Tab::make()
                 ->modifyQueryUsing(function(Builder $query)
                 {
                 $query->where("annee_id",session("Annee_id") ?? 1);
 
-                })->badge(Entree::query()
-                ->join("elementsentrees","elementsentrees.entree_id","entrees.id")
+                })->badge(Sortie::query()
+                ->join("elementssorties","elementssorties.sortie_id","sorties.id")
                 ->where("annee_id",session("Annee_id") ?? 1)->count())
                 ->icon("heroicon-o-calendar-days"),
-                'Tous'=>Tab::make()
-                ->badge(Entree::query()->join("elementsentrees","elementsentrees.entree_id","entrees.id")->count()),
+                'Toutes'=>Tab::make()
+                ->badge(Sortie::query()->join("elementssorties","elementssorties.sortie_id","sorties.id")->count()),
 
             ];
 

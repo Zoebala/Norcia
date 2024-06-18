@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Elementssortie extends Model
 {
     use HasFactory;
-    protected $fillable=["qte","produit_id","sortie_id"];
+    protected $fillable=["qte","produit_id","total","sortie_id"];
 
     public function sortie():BelongsTo
     {

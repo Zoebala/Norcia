@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('elementssorties', function (Blueprint $table) {
             $table->id();
             $table->integer("qte");
+            $table->integer("total");
             $table->unsignedBigInteger("produit_id");
             $table->unsignedBigInteger("sortie_id");
             $table->timestamps();
