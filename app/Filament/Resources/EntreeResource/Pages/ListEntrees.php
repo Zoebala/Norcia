@@ -36,7 +36,8 @@ class ListEntrees extends ListRecords
                 $query->whereRaw("Date(entrees.created_at)=DATE(now())");
 
                 })->badge(Entree::query()
-                ->whereRaw("Date(created_at)=DATE(now())")->count())
+                 ->join("elementsentrees","elementsentrees.entree_id","entrees.id")
+                ->whereRaw("Date(entrees.created_at)=DATE(now())")->count())
                 ->icon("heroicon-o-users"),
                 "$Annee->lib"=>Tab::make()
                 ->modifyQueryUsing(function(Builder $query)
@@ -44,10 +45,11 @@ class ListEntrees extends ListRecords
                 $query->where("annee_id",session("Annee_id") ?? 1);
 
                 })->badge(Entree::query()
+                ->join("elementsentrees","elementsentrees.entree_id","entrees.id")
                 ->where("annee_id",session("Annee_id") ?? 1)->count())
                 ->icon("heroicon-o-calendar-days"),
                 'Tous'=>Tab::make()
-                ->badge(Entree::query()->count()),
+                ->badge(Entree::query()->join("elementsentrees","elementsentrees.entree_id","entrees.id")->count()),
 
             ];
 

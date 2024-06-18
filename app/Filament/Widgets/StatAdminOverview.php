@@ -45,8 +45,9 @@ class StatAdminOverview extends BaseWidget
             ->color("success")
             ->chart([34,2,5,23])
             ->Icon("heroicon-o-calendar-days"),
-            Stat::make("Entrées Journalières", Entree::where("annee_id",session("Annee_id")?? 1)
-                                                        ->whereRaw("Date(entrees.created_at)=DATE(now())")->count())
+            Stat::make("Entrées Journalières", Entree::join("elementsentrees","elementsentrees.entree_id","entrees.id")
+                                                       ->where("annee_id",session("Annee_id")?? 1)
+                                                       ->whereRaw("Date(entrees.created_at)=DATE(now())")->count())
             ->description("Nombre d'entrées de la journée")
             ->color("success")
             ->chart([34,2,5,23])

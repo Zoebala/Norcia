@@ -35,7 +35,8 @@ class EntreeResource extends Resource
     }
     public static function getNavigationBadge():string
     {
-        return static::getModel()::where("annee_id",session("Annee_id")?? 1)
+        return static::getModel()::join("elementsentrees","elementsentrees.entree_id","entrees.id")
+                                  ->where("annee_id",session("Annee_id")?? 1)
                                   ->whereRaw("Date(entrees.created_at)=DATE(now())")->count();
     }
     protected static ?int $navigationSort = 60;
@@ -137,7 +138,7 @@ class EntreeResource extends Resource
                             ->label("Produit")
                             ->searchable()
                             ->sortable(),
-               
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->label("Enregistrée le ")
                     ->dateTime("d/m/Y à H:i:s")
