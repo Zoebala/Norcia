@@ -87,14 +87,21 @@ class PresenceResource extends Resource
                 TextColumn::make('arrivee')
                     ->label("Date/Heure Arrivée")
                     ->dateTime("d/m/Y H:i:s")
-                    ->placeholder("N'est pas venu(e)")
+                    ->placeholder("n'est pas venu(e)")
                     ->sortable(),
                 ToggleColumn::make('BtnDepart')
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('depart')
                     ->label("Date/Heure Depart")
                     ->dateTime("d/m/Y H:i:s")
-                    ->placeholder("N'est pas encore parti(e)")
+                    ->placeholder(function($record){
+                        if($record->BtnArrivee==0){
+                            return "n'est pas venu(e)";
+                        }else{
+                            return "n'est pas encore parti(e)";
+                        }
+
+                    })
                     ->sortable(),
                 TextColumn::make('status')
                     ->label("Statut")
