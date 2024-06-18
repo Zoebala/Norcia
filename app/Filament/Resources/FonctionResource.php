@@ -28,6 +28,7 @@ use Filament\Forms\Components\MarkdownEditor;
 use App\Filament\Resources\FonctionResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\FonctionResource\RelationManagers;
+use App\Filament\Resources\FonctionResource\RelationManagers\EmployesRelationManager;
 
 class FonctionResource extends Resource
 {
@@ -355,6 +356,7 @@ class FonctionResource extends Resource
     {
         return [
             //
+            EmployesRelationManager::class,
         ];
     }
 

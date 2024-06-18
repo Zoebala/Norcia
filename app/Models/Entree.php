@@ -14,7 +14,7 @@ class Entree extends Model
 {
     use HasFactory;
 
-    protected $fillable=["qte","prix","departement_id","produit_id","fournisseur_id","annee_id","created_at","updated_at"];
+    protected $fillable=["qte","prix","lib","departement_id","produit_id","fournisseur_id","annee_id","created_at","updated_at"];
 
     public function departement():BelongsTo
     {

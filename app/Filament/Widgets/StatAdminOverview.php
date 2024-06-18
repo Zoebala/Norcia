@@ -38,7 +38,8 @@ class StatAdminOverview extends BaseWidget
             ->color("success")
             ->chart([34,2,5,23])
             ->Icon("heroicon-o-user-group"),
-            Stat::make("Présence Journalière", Presence::whereRaw("Date(presences.created_at)=DATE(now())")->count())
+            Stat::make("Présence Journalière", Presence::where("annee_id",session("Annee_id")?? 1)
+                                                        ->whereRaw("Date(presences.created_at)=DATE(now())")->count())
             ->description("Nombre d'employés présent")
             ->color("success")
             ->chart([34,2,5,23])

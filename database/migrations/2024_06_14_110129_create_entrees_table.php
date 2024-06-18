@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             $table->integer("qte");
             $table->integer("prix");
+            $table->string("lib");
             $table->unsignedBigInteger("produit_id");
             $table->unsignedBigInteger("departement_id");
             $table->unsignedBigInteger("fournisseur_id");
-            $table->unsignedBigInteger("anneer_id");
+            $table->unsignedBigInteger("annee_id");
             $table->timestamps();
         });
     }
