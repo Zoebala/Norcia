@@ -157,7 +157,7 @@ class PresenceResource extends Resource
                         $check=Presence::whereRaw("id=$presence->id AND DATE(created_at)=DATE(now()) AND BtnDepart=1")->first();
 
                         //On vérifie si l'employé est absent(e)
-                        $check2=$check=Presence::whereRaw("id=$presence->id AND DATE(created_at)=DATE(now()) AND BtnArrivee=0")->exists();;
+                        $check2=$check=Presence::whereRaw("id=$presence->id AND BtnArrivee=0")->exists();;
                         if($check==null){
                             Presence::where("id",$presence->id)->update([
                                 "depart"=> now(),
@@ -170,7 +170,7 @@ class PresenceResource extends Resource
                             ->send();
                         }elseif($check2){
                             Notification::make()
-                            ->title("Désolé, cet(te) employé(e) n'est pas venu(e) Aujourd'hui!")
+                            ->title("Désolé, cet(te) employé(e) n'est pas venu(e) !")
                             ->warning()
                             ->send();
                         }

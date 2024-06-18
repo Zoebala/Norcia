@@ -72,7 +72,7 @@ class StatAdminOverview extends BaseWidget
             ->description("Chiffre d'affaires journalière")
             ->color("success")
             ->chart([34,2,5,23])
-            ->Icon("heroicon-o-truck"),
+            ->Icon("heroicon-o-banknotes"),
         ];
     }
 
