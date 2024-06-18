@@ -11,6 +11,7 @@ use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\Action;
 use Filament\Support\Enums\MaxWidth;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
@@ -108,12 +109,11 @@ class AnneeResource extends Resource
 
                     })
                     ->options(Annee::query()->pluck("lib","id")),
-                    TextInput::make("lib_annee")
+                    Hidden::make("lib_annee")
                     ->label("Année Choisie")
                     ->disabled()
                     // ->hidden()
                     ->dehydrated(true)
-                    ->placeholder($annee->lib ?? date("Y")),
 
 
                 ])
