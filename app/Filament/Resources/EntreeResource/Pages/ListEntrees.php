@@ -30,6 +30,14 @@ class ListEntrees extends ListRecords
 
 
             return [
+                'Today'=>Tab::make()
+                ->modifyQueryUsing(function(Builder $query)
+                {
+                $query->whereRaw("Date(entrees.created_at)=DATE(now())");
+
+                })->badge(Entree::query()
+                ->whereRaw("Date(created_at)=DATE(now())")->count())
+                ->icon("heroicon-o-users"),
                 "$Annee->lib"=>Tab::make()
                 ->modifyQueryUsing(function(Builder $query)
                 {

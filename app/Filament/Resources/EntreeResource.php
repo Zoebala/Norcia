@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\EntreeResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\EntreeResource\RelationManagers;
+use App\Filament\Resources\EntreeResource\RelationManagers\ElementsentreesRelationManager;
 
 class EntreeResource extends Resource
 {
@@ -55,7 +56,7 @@ class EntreeResource extends Resource
                                 ->preload()
                                 ->searchable()
                                 ->live(),
-                            Forms\Components\Select::make('departement_id')
+                        Forms\Components\Select::make('departement_id')
                                     ->label("Departement")
                                     ->options(function(Get $get){
                                         return Departement::where("annee_id",$get("annee_id"))->pluck("lib","id");
@@ -64,7 +65,7 @@ class EntreeResource extends Resource
                                     ->searchable()
                                     ->live()
                                     ->required(),
-                            Forms\Components\Select::make('fournisseur_id')
+                        Forms\Components\Select::make('fournisseur_id')
                                         ->label("Fournisseur")
                                         ->options(function(Get $get){
                                             return Fournisseur::join("avoirs","avoirs.fournisseur_id","fournisseurs.id")
@@ -78,7 +79,7 @@ class EntreeResource extends Resource
                                         ->live()
                                         ->searchable()
                                         ->required(),
-                            Forms\Components\Select::make('produit_id')
+                        Forms\Components\Select::make('produit_id')
                                     ->label("Produit")
                                     ->options(function(Get $get){
                                         return Produit::where("departement_id",$get("departement_id"))
@@ -88,23 +89,31 @@ class EntreeResource extends Resource
                                     })->preload()
                                     ->searchable()
                                     ->required(),
-                        Forms\Components\TextInput::make('lib')
-                            ->label("Désignation de la matière Première")
-                            ->required()
-                            ->placeholder("Ex: Orange")->columnSpanFull(),
-                        Forms\Components\TextInput::make('qte')
-                            ->label("Quantité")
-                            ->required()
-                            ->placeholder("Ex: 25")
-                            ->numeric(),
-                        Forms\Components\TextInput::make('prix')
-                            ->label("Prix Unitaire")
-                            ->required()
-                            ->placeholder("EX: 500")
-                            ->suffix(" FC")
-                            ->numeric(),
+
+                        Repeater::make("elementsentrees")
+                        ->label("Eléments d'entrée")
+                        ->relationship()
+                        ->schema([
+
+
+                                     Forms\Components\TextInput::make('lib')
+                                                        ->label("Désignation de la matière Première")
+                                                        ->required()
+                                                        ->placeholder("Ex: Orange"),
+                                    Forms\Components\TextInput::make('qte')
+                                                        ->label("Quantité")
+                                                        ->required()
+                                                        ->placeholder("Ex: 25")
+                                                        ->numeric(),
+                                    Forms\Components\TextInput::make('prix')
+                                                        ->label("Prix Unitaire")
+                                                        ->required()
+                                                        ->placeholder("EX: 500")
+                                                        ->suffix(" FC")
+                                                        ->numeric(),
+                        ])->columnSpanFull()->columns(3)
                     ])->columns(2)
-                
+
             ]);
     }
 
@@ -128,13 +137,7 @@ class EntreeResource extends Resource
                             ->label("Produit")
                             ->searchable()
                             ->sortable(),
-                Tables\Columns\TextColumn::make('qte')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('prix')
-                    ->numeric()
-                    ->suffix(" FC")
-                    ->sortable(),
+               
                 Tables\Columns\TextColumn::make('created_at')
                     ->label("Enregistrée le ")
                     ->dateTime("d/m/Y à H:i:s")
@@ -167,6 +170,8 @@ class EntreeResource extends Resource
     {
         return [
             //
+
+            ElementsentreesRelationManager::class,
         ];
     }
 

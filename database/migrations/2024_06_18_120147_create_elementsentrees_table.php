@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sorties', function (Blueprint $table) {
+        Schema::create('elementsentrees', function (Blueprint $table) {
             $table->id();
-           
-            $table->unsignedBigInteger("departement_id");
-            $table->unsignedBigInteger("annee_id");
+            $table->integer("qte");
+            $table->integer("prix");
+            $table->string("lib");
+            $table->unsignedBigInteger("entree_id");
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sorties');
+        Schema::dropIfExists('elementsentrees');
     }
 };
