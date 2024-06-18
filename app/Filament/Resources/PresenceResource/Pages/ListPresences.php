@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\PresenceResource\Pages;
 
+use App\Models\Annee;
 use Filament\Actions;
 use App\Models\Presence;
 use Filament\Resources\Pages\ListRecords;
@@ -24,6 +25,7 @@ class ListPresences extends ListRecords
 
     public function getTabs():array
     {
+        $Annee=Annee::where("id",session("Annee_id") ?? 1)->first();
         return [
             'Today'=>Tab::make()
             ->modifyQueryUsing(function(Builder $query)
@@ -33,7 +35,16 @@ class ListPresences extends ListRecords
             })->badge(Presence::query()
             ->whereRaw("Date(created_at)=DATE(now())")->count())
             ->icon("heroicon-o-users"),
-            'Toutes'=>Tab::make(),
+            "$Annee->lib"=>Tab::make()
+            ->modifyQueryUsing(function(Builder $query)
+            {
+            $query->where("annee_id",session("Annee_id") ?? 1);
+
+            })->badge(Presence::query()
+            ->where("annee_id",session("Annee_id") ?? 1)->count())
+            ->icon("heroicon-o-calendar-days"),
+            'Toutes'=>Tab::make()
+            ->badge(Presence::query()->count()),
 
         ];
     }

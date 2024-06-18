@@ -43,8 +43,7 @@ class EntreeResource extends Resource
     {
         return $form
             ->schema([
-                Repeater::make("entrees")
-                ->schema([
+
 
                     Section::make("Ajout Entrée")
                     ->icon("heroicon-o-shopping-cart")
@@ -105,7 +104,7 @@ class EntreeResource extends Resource
                             ->suffix(" FC")
                             ->numeric(),
                     ])->columns(2)
-                 ])->columnSpanFull(),
+                
             ]);
     }
 
