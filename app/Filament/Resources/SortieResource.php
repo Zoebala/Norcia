@@ -119,6 +119,14 @@ class SortieResource extends Resource
                                 // }
 
                             })
+                            ->hidden(function(Get $get){
+                                if(session("departement_id") !=null && filled($get('produit_id'))){
+                                    return false;
+                                }else{
+                                    return true;
+                                }
+                            })
+                            ->disabled()
                             ->columnSpanFull(),
                             Select::make("produit_id")
                                 ->label("Produit")
@@ -163,16 +171,20 @@ class SortieResource extends Resource
                                 ->dehydrated()
                                 // ->live()
                                 ->suffix(" FC"),
-                            // Hidden::make("total")
-                            //     ->required(),
 
 
-                    ])
-                    ->mutateRelationshipDataBeforeSaveUsing(function (array $data): array {
 
-                            dd($data);
+                       ])->mutateRelationshipDataBeforeCreateUsing(function (array $data): array {
+                        //identificaton du produit sorti
+                        $Produit=Produit::find($data['produit_id']);
+                        //Dimunition en stock des produits sortis
+                        Produit::whereId($data['produit_id'])
+                        ->update([
+                            'qte'=>$Produit->qte-$data["qte"],
+                        ]);
 
-                            return $data;
+
+                        return $data;
                     })->columnSpanFull()
                     ->columns(3),
                 ])->columns(2)
