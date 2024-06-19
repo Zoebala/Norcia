@@ -60,7 +60,7 @@ class StatAdminOverview extends BaseWidget
             ->color("success")
             ->chart([34,2,5,23])
             ->Icon("heroicon-o-truck"),
-            Stat::make("Produits Critiques", Produit::where("qte","<",20)->count())
+            Stat::make("Produits Critiques", Produit::where("qte","<",100)->count())
             ->description("Nombre de Produit en rupture de stock")
             ->color("danger")
             ->chart([34,2,5,23])

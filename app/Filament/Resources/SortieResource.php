@@ -32,7 +32,7 @@ class SortieResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-truck';
     protected static ?string $navigationLabel = 'Sorties/Ventes Produits';
-    protected static ?string $navigationGroup ="NB Management";
+    protected static ?string $navigationGroup ="Mouvements";
     public static function getNavigationBadgeColor():string
     {
         return "success";

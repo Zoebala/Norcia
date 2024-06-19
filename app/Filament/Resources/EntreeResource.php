@@ -29,7 +29,7 @@ class EntreeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
     protected static ?string $navigationLabel = 'Entrées/M.Premières';
-    protected static ?string $navigationGroup ="NB Management";
+    protected static ?string $navigationGroup ="Mouvements";
     public static function getNavigationBadgeColor():string
     {
         return "success";
@@ -97,7 +97,7 @@ class EntreeResource extends Resource
                         ->relationship()
                         ->schema([
 
-                             
+
                                 TextInput::make('lib')
                                         ->label("Désignation de la matière Première")
                                         ->required()

@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 use App\Models\Departement;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Group;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\TextColumn;
@@ -175,6 +176,31 @@ class ProduitResource extends Resource
 
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\Action::make("production")
+                    ->icon("heroicon-o-archive-box")
+                    ->color("success")
+                    ->form([
+                        Select::make("departement_id")
+                        ->label("Département")
+                        ->required()
+                        ->live()
+                        ->options(Departement::where("annee_id",session("Annee_id"))->whereActif(1)->pluck("lib","id"))
+                        ->preload()
+                        ->searchable()->columnSpan(1),
+                        Select::make("produit_id")
+                        ->label("Produit")
+                        ->required()
+                        ->options(function(Get $get){
+                            return Produit::whereDepartement_id($get("departement_id"))->whereActif(1)->pluck("lib","id");
+                        })
+                        ->searchable()
+                        ->preload(),
+                    ])
+                    ->action(function(){
+
+                    })
+                    ->modalWidth(MaxWidth::Medium)
+                    ->modalIcon("heroicon-o-archive-box") ,
                 ])->button()->label("Actions")
             ])
             ->bulkActions([
