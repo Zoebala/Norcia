@@ -18,7 +18,9 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Tables\Actions\ActionGroup;
+
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\SortieResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -84,6 +86,40 @@ class SortieResource extends Resource
                         ->label("Elements Sortie")
                         ->relationship()
                         ->schema([
+                            TextInput::make("etat")
+                            ->label(function(Get $get){
+                                return "Etat en Stock";
+                            })
+                            ->placeholder(function(Get $get){
+
+                                $chaine="";
+                                if(session("departement_id") !=null && filled($get('produit_id'))){
+
+                                    $Produit=Produit::find($get('produit_id'));
+
+                                    if(!$get("qte")){
+                                        $chaine="Nom du Produit : $Produit->lib  |   Quantité en Stock : $Produit->qte | Valeur en Stock : ".$Produit->prix * $Produit->qte." FC";
+
+                                    }else{
+                                        $PQ=(int)$Produit->qte;
+                                        $Qte=(int)$get("qte");
+                                        $Reste=$PQ-$Qte;
+                                        $chaine="Nom du Produit : $Produit->lib  |   Quantité en Stock : $Produit->qte | Valeur en Stock : ".$Produit->prix * $Produit->qte." FC | Reste : ".$Reste." | Valeur Restante ".$Produit->prix*$Reste." FC";
+                                    }
+
+                                    return $chaine;
+                                }
+
+                                // if(session("departement_id") !=null && filled($get('produit_id')) && filled($get("qte"))){
+
+                                //     $Produit=Produit::find($get('produit_id'));
+                                //     $chaine +=;
+
+                                //     return $chaine;
+                                // }
+
+                            })
+                            ->columnSpanFull(),
                             Select::make("produit_id")
                                 ->label("Produit")
                                 ->live()
@@ -93,6 +129,9 @@ class SortieResource extends Resource
                                                  ->pluck("lib","id");
                                 })->preload()
                                 ->searchable()
+                                ->afterStateUpdated(function(Set $set){
+                                    $set("qte",null);
+                                })
                                 ->required(),
                             TextInput::make("qte")
                                 ->label("Quantié")
@@ -101,26 +140,41 @@ class SortieResource extends Resource
                                 ->live()
                                 ->afterStateUpdated(function(Get $get, Set $set, $state){
 
-                                    $Produit=Produit::whereActif(1)
-                                                    ->whereId($get("produit_id"))
-                                                    ->first();
+                                    $Produit=Produit::find($get("produit_id"));
 
-                                    $set("Total",$state * $Produit->prix);
+                                    // $set("Total",$state * $Produit->prix);
                                     $set("total",$state * $Produit->prix);
+
+                                    if($state>$Produit->qte){
+
+                                        $set("qte",null);
+
+                                        Notification::make()
+                                                    ->title("La quantité saisie dépasse la quantité en stock")
+                                                    ->warning()
+                                                    ->send();
+                                    }
 
                                 })
                                 ->placeholder("Ex: 10"),
-                            TextInput::make("Total")
+                            TextInput::make("total")
                                 ->disabled()
                                 ->required()
-                                ->dehydrated(false)
-                                ->live()
+                                ->dehydrated()
+                                // ->live()
                                 ->suffix(" FC"),
-                            Hidden::make("total")
-                                ->required(),
+                            // Hidden::make("total")
+                            //     ->required(),
 
 
-                        ])->columnSpanFull()->columns(3),
+                    ])
+                    ->mutateRelationshipDataBeforeSaveUsing(function (array $data): array {
+
+                            dd($data);
+
+                            return $data;
+                    })->columnSpanFull()
+                    ->columns(3),
                 ])->columns(2)
             ]);
     }
@@ -139,12 +193,13 @@ class SortieResource extends Resource
                     ->label("Enregistrée le")
                     ->dateTime("d/m/Y à H:i:s")
                     ->sortable()
+
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])
+            ])->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])

@@ -15,6 +15,7 @@ use App\Models\Fournisseur;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\EntreeResource\Pages;
@@ -96,22 +97,22 @@ class EntreeResource extends Resource
                         ->relationship()
                         ->schema([
 
-
-                                     Forms\Components\TextInput::make('lib')
-                                                        ->label("Désignation de la matière Première")
-                                                        ->required()
-                                                        ->placeholder("Ex: Orange"),
-                                    Forms\Components\TextInput::make('qte')
-                                                        ->label("Quantité")
-                                                        ->required()
-                                                        ->placeholder("Ex: 25")
-                                                        ->numeric(),
-                                    Forms\Components\TextInput::make('prix')
-                                                        ->label("Prix Unitaire")
-                                                        ->required()
-                                                        ->placeholder("EX: 500")
-                                                        ->suffix(" FC")
-                                                        ->numeric(),
+                             
+                                TextInput::make('lib')
+                                        ->label("Désignation de la matière Première")
+                                        ->required()
+                                        ->placeholder("Ex: Orange"),
+                                TextInput::make('qte')
+                                        ->label("Quantité")
+                                        ->required()
+                                        ->placeholder("Ex: 25")
+                                        ->numeric(),
+                                  TextInput::make('prix')
+                                        ->label("Prix Unitaire")
+                                        ->required()
+                                        ->placeholder("EX: 500")
+                                        ->suffix(" FC")
+                                        ->numeric(),
                         ])->columnSpanFull()->columns(3)
                     ])->columns(2)
 
@@ -148,7 +149,7 @@ class EntreeResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])
+            ])->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])
