@@ -8,7 +8,9 @@ use App\Models\Employe;
 use App\Models\Produit;
 use App\Models\Presence;
 use App\Models\Pointvente;
+use App\Models\Production;
 use App\Models\Departement;
+use App\Models\Elementsentree;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 
@@ -20,11 +22,6 @@ class StatAdminOverview extends BaseWidget
     {
         return [
             //
-            Stat::make("Departements", Departement::where("annee_id",session("Annee_id")??1)->count())
-            ->description("Nos Départements")
-            ->color("success")
-            ->chart([34,2,5,23])
-            ->Icon("heroicon-o-building-office"),
             Stat::make("Produits", Produit::where("annee_id",session("Annee_id")??1)->count())
             ->description("Nos Produits")
             ->color("success")
@@ -35,11 +32,6 @@ class StatAdminOverview extends BaseWidget
             ->color("success")
             ->chart([34,2,5,23])
             ->Icon("heroicon-o-home-modern"),
-            Stat::make("Employés", Employe::where("annee_id",session("Annee_id")??1)->count())
-            ->description("Nos employés")
-            ->color("success")
-            ->chart([34,2,5,23])
-            ->Icon("heroicon-o-user-group"),
             Stat::make("Présence Journalière", Presence::where("annee_id",session("Annee_id")?? 1)
                                                         ->whereRaw("Date(presences.created_at)=DATE(now())")->count())
             ->description("Nombre d'employés présent")
@@ -73,6 +65,17 @@ class StatAdminOverview extends BaseWidget
             ->color("success")
             ->chart([34,2,5,23])
             ->Icon("heroicon-o-banknotes"),
+            Stat::make("Production journalière",Production::where("annee_id",session("Annee_id")?? 1)
+                                                ->whereRaw("Date(productions.created_at)=DATE(now())")->count())
+            ->description("Produits concernés par la production")
+            ->color("success")
+            ->chart([34,2,5,23])
+            ->Icon("heroicon-o-archive-box"),
+            Stat::make("Matières Premières Critiques", Elementsentree::where("qte","<",50)->count())
+            ->description("Matières Premières en rupture de stock")
+            ->color("danger")
+            ->chart([34,2,5,23])
+            ->Icon("heroicon-o-shopping-cart"),
         ];
     }
 

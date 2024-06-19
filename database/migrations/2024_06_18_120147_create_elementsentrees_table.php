@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer("prix");
             $table->string("lib");
             $table->unsignedBigInteger("entree_id");
+           
             $table->timestamps();
         });
     }

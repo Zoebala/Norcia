@@ -66,9 +66,10 @@ class SortieResource extends Resource
                         ->live()
                         ->options(function(Get $get){
 
-                            return Departement::where("annee_id",$get("annee_id"))
-                                                ->whereActif(1)
-                                                ->pluck("lib","id");
+                            return Departement::join("avoirs","departements.id","avoirs.departement_id")
+                                                ->join("fournisseurs","fournisseurs.id","avoirs.fournisseur_id")
+                                                ->whereAnnee_id($get("annee_id"))->whereActif(1)->pluck("departements.lib","departements.id");
+
                         })
                         ->preload()
                         ->afterStateUpdated(function($state){
@@ -118,7 +119,7 @@ class SortieResource extends Resource
                                 //     return $chaine;
                                 // }
 
-                            })
+                            })->visibleOn("create")
                             ->hidden(function(Get $get){
                                 if(session("departement_id") !=null && filled($get('produit_id'))){
                                     return false;
@@ -175,16 +176,16 @@ class SortieResource extends Resource
 
 
                        ])->mutateRelationshipDataBeforeCreateUsing(function (array $data): array {
-                        //identificaton du produit sorti
-                        $Produit=Produit::find($data['produit_id']);
-                        //Dimunition en stock des produits sortis
-                        Produit::whereId($data['produit_id'])
-                        ->update([
-                            'qte'=>$Produit->qte-$data["qte"],
-                        ]);
+                            //identificaton du produit sorti
+                            $Produit=Produit::find($data['produit_id']);
+                            //Dimunition en stock des produits sortis
+                            Produit::whereId($data['produit_id'])
+                            ->update([
+                                'qte'=>$Produit->qte-$data["qte"],
+                            ]);
 
 
-                        return $data;
+                            return $data;
                     })->columnSpanFull()
                     ->columns(3),
                 ])->columns(2)

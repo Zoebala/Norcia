@@ -113,7 +113,8 @@ class EntreeResource extends Resource
                                         ->placeholder("EX: 500")
                                         ->suffix(" FC")
                                         ->numeric(),
-                        ])->columnSpanFull()->columns(3)
+                        ])
+                        ->columnSpanFull()->columns(3)
                     ])->columns(2)
 
             ]);

@@ -11,7 +11,7 @@ class Elementsproduction extends Model
 {
     use HasFactory;
 
-    protected $fillable=["production_id","elementsentree_id","qte"];
+    protected $fillable=["production_id","elementsentree_id","qte","created_at","updated_at"];
 
 
     public function production():BelongsTo
