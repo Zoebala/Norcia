@@ -173,9 +173,11 @@ class ProductionResource extends Resource
                             Select::make("elementsentree_id")
                                 ->label("Matière Première")
                                 ->options(function(){
-                                    return Elementsentree::join("entrees","entrees.id","elementsentrees.entree_id")
-                                                         ->whereProduit_id(session("produit_id"))
-                                                         ->pluck("elementsentrees.lib","elementsentrees.id");
+                                    return Elementsentree::all()->pluck("lib","id");
+
+                                                    // join("entrees","entrees.id","elementsentrees.entree_id")
+                                                    //      ->whereProduit_id(session("produit_id"))
+                                                    //      ->pluck("elementsentrees.lib","elementsentrees.id");
                                 })
                                 ->afterStateUpdated(function(Set $set){
                                     $set("qte",null);

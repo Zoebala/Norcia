@@ -2,8 +2,9 @@
 
 namespace App\Filament\Resources\EntreeResource\Pages;
 
-use App\Filament\Resources\EntreeResource;
 use Filament\Actions;
+use App\Models\Entree;
+use App\Filament\Resources\EntreeResource;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateEntree extends CreateRecord
@@ -19,10 +20,4 @@ class CreateEntree extends CreateRecord
         return "Entrée effectuée avec succès!";
     }
 
-    protected function mutateFormDataBeforeCreate(array $data):array
-    {
-
-        
-        return $data;
-    }
 }

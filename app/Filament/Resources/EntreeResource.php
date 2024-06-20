@@ -12,7 +12,9 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\Departement;
 use App\Models\Fournisseur;
+use App\Models\Elementsentree;
 use Filament\Resources\Resource;
+use App\Models\Elementsentreedate;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
@@ -66,6 +68,14 @@ class EntreeResource extends Resource
                                     ->preload()
                                     ->searchable()
                                     ->live()
+                                    ->afterStateUpdated(function($state){
+                                        if(session("departement_id") == null){
+                                            session()->push("departement_id",$state);
+                                        }else{
+                                            session()->pull("departement_id");
+                                            session()->push("departement_id",$state);
+                                        }
+                                    })
                                     ->required(),
                         Forms\Components\Select::make('fournisseur_id')
                                         ->label("Fournisseur")
@@ -79,6 +89,15 @@ class EntreeResource extends Resource
                                         })
                                         ->preload()
                                         ->live()
+                                        ->live()
+                                        ->afterStateUpdated(function($state){
+                                            if(session("fournisseur_id") == null){
+                                                session()->push("fournisseur_id",$state);
+                                            }else{
+                                                session()->pull("fournisseur_id");
+                                                session()->push("fournisseur_id",$state);
+                                            }
+                                        })
                                         ->searchable()
                                         ->required(),
                         Forms\Components\Select::make('produit_id')
@@ -90,6 +109,15 @@ class EntreeResource extends Resource
                                                         ->pluck("lib","id");
                                     })->preload()
                                     ->searchable()
+                                    ->live()
+                                    ->afterStateUpdated(function($state){
+                                        if(session("produit_id") == null){
+                                            session()->push("produit_id",$state);
+                                        }else{
+                                            session()->pull("produit_id");
+                                            session()->push("produit_id",$state);
+                                        }
+                                    })
                                     ->required(),
 
                         Repeater::make("elementsentrees")
@@ -101,6 +129,7 @@ class EntreeResource extends Resource
                                 TextInput::make('lib')
                                         ->label("Désignation de la matière Première")
                                         ->required()
+                                        ->datalist(Elementsentree::all()->pluck("lib","lib"))
                                         ->placeholder("Ex: Orange"),
                                 TextInput::make('qte')
                                         ->label("Quantité")
@@ -113,12 +142,44 @@ class EntreeResource extends Resource
                                         ->placeholder("EX: 500")
                                         ->suffix(" FC")
                                         ->numeric(),
-                        ])->mutateRelationshipDataBeforeCreateUsing(function (array $data): array {
-
-                            
+                        ])->mutateRelationshipDataBeforeCreateUsing(function (array $data): array|null {
 
 
-                            return $data;
+                            //identification de l'entrée en cours
+                            $Entree=Entree::whereDepartement_id(session("departement_id"))
+                                            ->whereFournisseur_id(session("fournisseur_id"))
+                                            ->whereProduit_id(session("produit_id"))
+                                            ->first();
+
+                            $data["entree_id"]=$Entree->id;
+
+                            //enregistrement des éléments d'entrées dans la table elementsentreedates
+                            Elementsentreedate::create([
+                                "entree_id" => $data["entree_id"],
+                                "lib"=>$data["lib"],
+                                "qte"=>$data["qte"],
+                                "prix"=>$data["prix"],
+                            ]);
+                            //mise à jour de la table elementsentree si elle existe déjà
+                            $Eentree=Elementsentree::whereLib($data["lib"])->exists();
+                            //si l'éléments entrée n'existe pas
+                            if($Eentree==false){
+
+                                return $data;
+                            }else{//s'il existe
+                                $Ee=Elementsentree::whereLib($data["lib"])->first();
+                                $SommeQte=$Ee->qte +=$data["qte"];
+
+                                Elementsentree::whereLib($data["lib"])
+                                              ->update([
+                                                    "qte"=> $SommeQte,
+                                              ]);
+                                return null;
+                            }
+
+
+
+
                         })
                         ->columnSpanFull()->columns(3),
 
