@@ -18,4 +18,11 @@ class CreateEntree extends CreateRecord
     {
         return "Entrée effectuée avec succès!";
     }
+
+    protected function mutateFormDataBeforeCreate(array $data):array
+    {
+
+        
+        return $data;
+    }
 }

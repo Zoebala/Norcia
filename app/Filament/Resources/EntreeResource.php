@@ -113,8 +113,15 @@ class EntreeResource extends Resource
                                         ->placeholder("EX: 500")
                                         ->suffix(" FC")
                                         ->numeric(),
-                        ])
-                        ->columnSpanFull()->columns(3)
+                        ])->mutateRelationshipDataBeforeCreateUsing(function (array $data): array {
+
+                            
+
+
+                            return $data;
+                        })
+                        ->columnSpanFull()->columns(3),
+
                     ])->columns(2)
 
             ]);
