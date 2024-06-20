@@ -24,6 +24,7 @@ use App\Filament\Resources\EntreeResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\EntreeResource\RelationManagers;
 use App\Filament\Resources\EntreeResource\RelationManagers\ElementsentreesRelationManager;
+use App\Filament\Resources\EntreeResource\RelationManagers\ElementsentreedatesRelationManager;
 
 class EntreeResource extends Resource
 {
@@ -38,7 +39,7 @@ class EntreeResource extends Resource
     }
     public static function getNavigationBadge():string
     {
-        return static::getModel()::join("elementsentrees","elementsentrees.entree_id","entrees.id")
+        return static::getModel()::join("elementsentreedates","elementsentreedates.entree_id","entrees.id")
                                   ->where("annee_id",session("Annee_id")?? 1)
                                   ->whereRaw("Date(entrees.created_at)=DATE(now())")->count();
     }
@@ -242,7 +243,8 @@ class EntreeResource extends Resource
         return [
             //
 
-            ElementsentreesRelationManager::class,
+            // ElementsentreesRelationManager::class,
+            ElementsentreedatesRelationManager::class,
         ];
     }
 
