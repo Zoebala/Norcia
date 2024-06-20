@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Entree;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-
-class Elementsentree extends Model
+class Elementsentreedate extends Model
 {
     use HasFactory;
 

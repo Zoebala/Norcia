@@ -7,6 +7,7 @@ use App\Models\Produit;
 use App\Models\Departement;
 use App\Models\Fournisseur;
 use App\Models\Elementsentree;
+use App\Models\Elementsentreedate;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,6 +27,10 @@ class Entree extends Model
     public function elementsentrees():HasMany
     {
         return $this->hasMany(Elementsentree::class);
+    }
+    public function elementsentreedates():HasMany
+    {
+        return $this->hasMany(Elementsentreedate::class);
     }
     public function produit():BelongsTo
     {
