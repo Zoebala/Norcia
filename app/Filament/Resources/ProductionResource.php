@@ -40,7 +40,7 @@ class ProductionResource extends Resource
         return static::getModel()::where("annee_id",session("Annee_id")?? 1)
                                   ->whereRaw("Date(productions.created_at)=DATE(now())")->count();
     }
-    protected static ?int $navigationSort = 80;
+    protected static ?int $navigationSort = 70;
 
     public static function form(Form $form): Form
     {

@@ -43,7 +43,7 @@ class SortieResource extends Resource
                                   ->where("annee_id",session("Annee_id")?? 1)
                                   ->whereRaw("Date(sorties.created_at)=DATE(now())")->count();
     }
-    protected static ?int $navigationSort = 70;
+    protected static ?int $navigationSort = 80;
 
     public static function form(Form $form): Form
     {
