@@ -61,7 +61,7 @@ class StatAdminOverview extends BaseWidget
                                                                 ->where("annee_id",session("Annee_id")?? 1)
                                                                 ->whereRaw("Date(sorties.created_at)=DATE(now())")
                                                                 ->SUM("total")." FC")
-            ->description("Chiffre d'affaires journalière")
+            ->description("Chiffre d'affaires journalier")
             ->color("success")
             ->chart([34,2,5,23])
             ->Icon("heroicon-o-banknotes"),
