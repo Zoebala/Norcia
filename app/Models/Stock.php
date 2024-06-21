@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Annee;
 use App\Models\Produit;
 use App\Models\Vendeur;
+use App\Models\Departement;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,13 +13,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Stock extends Model
 {
     use HasFactory;
-    protected $fillable=["produit_id","departement_id","vendeur_id","annee_id","qte"];
+    protected $fillable=["departement_id","vendeur_id","annee_id"];
 
 
-    public function produit():BelongsTo
-    {
-        return $this->belongsTo(Produit::class);
-    }
+
     public function vendeur():BelongsTo
     {
         return $this->belongsTo(Vendeur::class);
@@ -26,5 +24,9 @@ class Stock extends Model
     public function annee():BelongsTo
     {
         return $this->belongsTo(Annee::class);
+    }
+    public function departement():BelongsTo
+    {
+        return $this->belongsTo(Departement::class);
     }
 }
