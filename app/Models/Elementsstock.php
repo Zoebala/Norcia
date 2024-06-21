@@ -12,7 +12,7 @@ class Elementsstock extends Model
 {
     use HasFactory;
 
-    protected $fillable=["qte","produit_id","stock_id","created_at","updated_at"];
+    protected $fillable=["qte","produit_id","stock_id","total","created_at","updated_at"];
 
     public function produit(): BelongsTo
     {
@@ -22,5 +22,5 @@ class Elementsstock extends Model
     {
         return $this->belongsTo(Stock::class);
     }
-  
+
 }
