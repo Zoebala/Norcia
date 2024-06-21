@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Vendeur extends Model
 {
     use HasFactory;
-    protected $fillable=["pointvente_id","employe_id","ville"];
+    protected $fillable=["pointvente_id","employe_id","ville","created_at","updated_at"];
 
     public function pointvente():BelongsTo
     {
