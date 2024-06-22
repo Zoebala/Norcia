@@ -14,7 +14,9 @@ use Filament\Forms\Set;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\Departement;
+use App\Models\Elementsstock;
 use Filament\Resources\Resource;
+use App\Models\Elementsstockdate;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Repeater;
@@ -24,6 +26,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\StockResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\StockResource\RelationManagers;
+use App\Filament\Resources\StockResource\RelationManagers\ElementsstockdatesRelationManager;
 
 class StockResource extends Resource
 {
@@ -31,6 +34,7 @@ class StockResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-circle-stack';
     protected static ?string $navigationLabel = 'Stockage/Ravitaillement';
+    protected static ?string $modelLabel = 'Stockage/Ravitaillement';
     protected static ?string $navigationGroup ="NB Management";
     protected static ?int $navigationSort = 70;
 
@@ -102,17 +106,26 @@ class StockResource extends Resource
                                                     ->join("concerners","concerners.pointvente_id","pointventes.id")
                                                     ->join("departements","departements.id","concerners.departement_id")
                                                     ->where("departements.id",$get("departement_id"))
-                                                    ->pluck("pointventes.lib","pointventes.id");
+                                                    ->pluck("pointventes.lib","vendeurs.id");
                                 }else{
                                     return Vendeur::join("employes","employes.id","vendeurs.employe_id")
                                                     ->join("associers","associers.employe_id","employes.id")
                                                     ->join("departements","departements.id","associers.departement_id")
                                                     ->where("departements.id",$get("departement_id"))
                                                     ->where("employes.actif",1)
-                                                    ->pluck("employes.nom","employes.id");
+                                                    ->pluck("employes.nom","vendeurs.id");
 
                                 }
 
+                            }
+                        })
+                        ->live()
+                        ->afterStateUpdated(function($state){
+                            if(session("vendeur_id") == null){
+                                session()->push("vendeur_id",$state);
+                            }else{
+                                session()->pull("vendeur_id");
+                                session()->push("vendeur_id",$state);
                             }
                         })
                         ->preload()
@@ -196,7 +209,7 @@ class StockResource extends Resource
                                 // ->live()
                                 ->suffix(" FC"),
                         ])
-                        ->mutateRelationshipDataBeforeCreateUsing(function (array $data): array {
+                        ->mutateRelationshipDataBeforeCreateUsing(function (array $data): array|null {
                             //identificaton du produit sorti pour stockage vendeur
                             $Produit=Produit::find($data['produit_id']);
                             //Dimunition en stock des produits à destination des vendeurs
@@ -206,7 +219,48 @@ class StockResource extends Resource
                             ]);
 
 
-                            return $data;
+                            //identification du stock en cours
+                            $Stock=Stock::whereDepartement_id(session("departement_id"))
+                                            ->whereVendeur_id(session("vendeur_id"))
+                                            ->first();
+
+                            $data["stock_id"]=$Stock->id;
+
+                            //enregistrement des éléments de stock dans la table elementsstockdates
+                            Elementsstockdate::create([
+                                "stock_id" => $data["stock_id"],
+                                "produit_id"=>$data["produit_id"],
+                                "vendeur_id"=>session("vendeur_id")[0],
+                                "qte"=>$data["qte"],
+                                "total"=>$data["total"],
+                            ]);
+
+
+                            //mise à jour de la table elementsstock si elle existe déjà
+                            $Estock=Elementsstock::whereProduit_id($data["produit_id"])
+                                                 ->whereVendeur_id(session("vendeur_id"))
+                                                 ->exists();
+                            //si l'élément stock n'existe pas
+                            if($Estock==false){
+                                $data["vendeur_id"]=session("vendeur_id")[0];
+                                return $data;
+                            }else{//s'il existe
+                                $Es=Elementsstock::whereProduit_id($data["produit_id"])
+                                                 ->whereVendeur_id(session("vendeur_id"))
+                                                 ->first();
+                                $SommeQte=$Es->qte +=$data["qte"];
+
+                                Elementsstock::whereProduit_id($data["produit_id"])
+                                              ->whereVendeur_id(session("vendeur_id"))
+                                              ->update([
+                                                    "qte"=> $SommeQte,
+                                              ]);
+                                return null;
+                            }
+
+
+
+                            // return $data;
                        })
                         ->columnSpanFull()->columns(3),
                 ])->columns(2),
@@ -289,6 +343,7 @@ class StockResource extends Resource
     {
         return [
             //
+            ElementsstockdatesRelationManager::class,
         ];
     }
 

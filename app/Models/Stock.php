@@ -7,6 +7,7 @@ use App\Models\Produit;
 use App\Models\Vendeur;
 use App\Models\Departement;
 use App\Models\Elementsstock;
+use App\Models\Elementsstockdate;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -35,5 +36,9 @@ class Stock extends Model
     public function elementsstocks(): HasMany
     {
         return $this->hasMany(Elementsstock::class);
+    }
+    public function elementsstockdates(): HasMany
+    {
+        return $this->hasMany(Elementsstockdate::class);
     }
 }

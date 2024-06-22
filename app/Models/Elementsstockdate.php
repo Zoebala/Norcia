@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Stock;
-use App\Models\Produit;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class Elementsstock extends Model
+class Elementsstockdate extends Model
 {
     use HasFactory;
 
@@ -22,5 +19,4 @@ class Elementsstock extends Model
     {
         return $this->belongsTo(Stock::class);
     }
-
 }
