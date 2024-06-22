@@ -44,12 +44,6 @@ class DepartementsRelationManager extends RelationManager
                 ->label("Departement")
                 ->searchable()
                 ->sortable(),
-                TextColumn::make('produits.lib')
-                ->label("Produit")
-                ->searchable()
-                ->sortable()
-                ->placeholder("Tous les articles")
-               ,
                 TextColumn::make('description')
                     ->label("Description")
                     ->searchable()

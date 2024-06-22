@@ -15,16 +15,13 @@ class Concerner extends Model
 {
     use HasFactory;
 
-    protected $fillable=["departement_id","pointvente_id","produit_id","created_at","updated_at"];
+    protected $fillable=["departement_id","pointvente_id","created_at","updated_at"];
 
      protected $casts=[
         "produit_id"=>"array",
     ];
 
-    // public function produit():BelongsTo
-    // {
-    //     return $this->belongsTo(Produit::class);
-    // }
+   
     public function departement():BelongsTo
     {
         return $this->belongsTo(Departement::class);
