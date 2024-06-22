@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\StockResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\StockResource\RelationManagers;
+use App\Filament\Resources\StockResource\RelationManagers\ElementsstocksRelationManager;
 use App\Filament\Resources\StockResource\RelationManagers\ElementsstockdatesRelationManager;
 
 class StockResource extends Resource
@@ -40,7 +41,9 @@ class StockResource extends Resource
 
     public static function getNavigationBadge():string
     {
-        return static::getModel()::where("annee_id",session("Annee_id") ?? 1)->count();
+        return static::getModel()::join("elementsstocks","elementsstocks.stock_id","stocks.id")
+        ->where("annee_id",session("Annee_id")?? 1)
+        ->whereRaw("Date(stocks.created_at)=DATE(now())")->count();
     }
     public static function getNavigationBadgeColor():string
     {
@@ -271,10 +274,10 @@ class StockResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('annee.lib')
-                    ->label("Année")
-                    ->searchable()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('annee.lib')
+                //     ->label("Année")
+                //     ->searchable()
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('departement.lib')
                     ->label("Département")
                     ->searchable()
@@ -294,7 +297,7 @@ class StockResource extends Resource
                         }
                     })
                     ->placeholder("pas de point de vente")
-                    ->searchable()
+
                     ->sortable(),
                 Tables\Columns\TextColumn::make('Emp')
                     ->label("Employé")
@@ -311,7 +314,7 @@ class StockResource extends Resource
                         }
                     })
                     ->placeholder("pas d'employé")
-                    ->searchable()
+
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label("Enregistré le")
@@ -319,7 +322,8 @@ class StockResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label("Mise à jour le")
+                    ->dateTime("d/m/Y à H:i:s")
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])->defaultSort('created_at', 'desc')
@@ -343,6 +347,8 @@ class StockResource extends Resource
     {
         return [
             //
+
+            ElementsstocksRelationManager::class,
             ElementsstockdatesRelationManager::class,
         ];
     }
