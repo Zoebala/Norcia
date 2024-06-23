@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('commandes', function (Blueprint $table) {
+        Schema::create('elementscommandes', function (Blueprint $table) {
             $table->id();
-            $table->string("etat")->default("Active");
-            $table->unsignedBigInteger("annee_id");
-            $table->unsignedBigInteger("client_id");
+            $table->unsignedBigInteger("commande_id");
+            $table->unsignedBigInteger("produit_id");
+            $table->Integer("qte");
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('commandes');
+        Schema::dropIfExists('elementscommandes');
     }
 };
