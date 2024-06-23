@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger("employe_id")->nullable();
             $table->unsignedBigInteger("pointvente_id")->nullable();
             $table->string("ville");
+            $table->string("nom");
             $table->boolean("actif")->default(true);
             $table->timestamps();
         });

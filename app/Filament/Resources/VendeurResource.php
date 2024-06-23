@@ -7,11 +7,13 @@ use Filament\Tables;
 use App\Models\Employe;
 use App\Models\Vendeur;
 use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Forms\Form;
 use App\Models\Pointvente;
 use Filament\Tables\Table;
-use Filament\Resources\Resource;
 
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
@@ -47,12 +49,23 @@ class VendeurResource extends Resource
                 Section::make("Définition Vendeur")
                 ->icon("heroicon-o-user")
                 ->schema([
-
+                    Hidden::make("nom")
+                        ->required()
+                        ->dehydrated(),
                     Select::make('employe_id')
                         ->label("Employé")
                         ->preload()
                         ->searchable()
                         ->live()
+                        ->afterStateUpdated(function(Set $set,$state){
+                            if($state !=null){
+
+                                $Emp=Employe::find($state);
+                                $set("nom",$Emp->nom." ".$Emp->postnom." ".$Emp->prenom);
+                            }else{
+                                $set("nom",null);
+                            }
+                        })
                         ->hidden(function(Get $get){
                             if(filled($get("pointvente_id"))){
                                 return true;
@@ -73,6 +86,15 @@ class VendeurResource extends Resource
                         })
                         ->searchable()
                         ->live()
+                        ->afterStateUpdated(function(Set $set,$state){
+                            if($state !=null){
+
+                                $Pv=Pointvente::find($state);
+                                $set("nom",$Pv->lib);
+                            }else{
+                                $set("nom",null);
+                            }
+                        })
                         ->options(Pointvente::whereAnnee_id(session("Annee_id")?? 1)->whereActif(1)->pluck("lib","id")),
                     TextInput::make('ville')
                         ->required()
@@ -100,23 +122,10 @@ class VendeurResource extends Resource
                     "0"=>"Non"
                 ]),
                 Tables\Columns\TextColumn::make('nom')
-                ->label("Employe")
-                ->getStateUsing(function($record){
-
-                    $Employe=Employe::find($record->employe_id);
-                    if($Employe){
-
-                        return $Employe->nom." ".$Employe->postnom." ".$Employe->prenom;
-                    }else{
-                        return "";
-                    }
-
-                })
+                ->label("Vendeur")
                 ->sortable()
                 ->searchable(),
-                Tables\Columns\TextColumn::make('pointvente.lib')
-                    ->label("Point de Vente")
-                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('ville')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -128,7 +137,7 @@ class VendeurResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])
+            ])->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])
