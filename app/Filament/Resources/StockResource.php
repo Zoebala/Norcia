@@ -83,45 +83,9 @@ class StockResource extends Resource
                         ->preload()
                         ->searchable()
                         ->required(),
-                    Select::make('type_vendeur')
-                        ->label("Type de Vendeur")
-                        ->options([
-                            "PV"=>"Point de Vente",
-                            "Emp"=>"Vendeur Ambulant",
-                        ])
-                        ->preload()
-                        ->live()
-                        ->afterStateUpdated(function(Get $get, Set $set,$state){
-                            if($state==null){
-                                $set("vendeur_id",null);
-                            }
-                        })
-                        ->searchable()
-                        ->required(),
                     Select::make('vendeur_id')
                         ->label("Vendeur")
-                        ->options(function(Get $get){
-                            if(filled($get("type_vendeur"))){
-
-                                if($get("type_vendeur")=="PV"){
-
-                                    return Vendeur::join("pointventes","pointventes.id","vendeurs.pointvente_id")
-                                                    ->join("concerners","concerners.pointvente_id","pointventes.id")
-                                                    ->join("departements","departements.id","concerners.departement_id")
-                                                    ->where("departements.id",$get("departement_id"))
-                                                    ->pluck("pointventes.lib","vendeurs.id");
-                                }else{
-                                    return Vendeur::join("employes","employes.id","vendeurs.employe_id")
-                                                    ->join("associers","associers.employe_id","employes.id")
-                                                    ->join("departements","departements.id","associers.departement_id")
-                                                    ->where("departements.id",$get("departement_id"))
-                                                    ->where("employes.actif",1)
-                                                    ->pluck("employes.nom","vendeurs.id");
-
-                                }
-
-                            }
-                        })
+                        ->options(Vendeur::all()->pluck("nom","id"))
                         ->live()
                         ->afterStateUpdated(function($state){
                             if(session("vendeur_id") == null){
@@ -266,7 +230,7 @@ class StockResource extends Resource
                             // return $data;
                        })
                         ->columnSpanFull()->columns(3),
-                ])->columns(2),
+                ])->columns(3),
             ]);
     }
 
@@ -274,47 +238,15 @@ class StockResource extends Resource
     {
         return $table
             ->columns([
-                // Tables\Columns\TextColumn::make('annee.lib')
-                //     ->label("Année")
-                //     ->searchable()
-                //     ->sortable(),
+
                 Tables\Columns\TextColumn::make('departement.lib')
                     ->label("Département")
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('pv')
-                    ->label("Point de Vente")
-                    ->getStateUsing(function($record){
 
-                        $Pv=Vendeur::join("pointventes","pointventes.id","vendeurs.pointvente_id")
-                                 ->where("vendeurs.id",$record->vendeur_id)
-                                 ->first("pointventes.lib");
-
-                        if($Pv){
-                          return $Pv->lib;
-                        }else{
-                            return " ";
-                        }
-                    })
-                    ->placeholder("pas de point de vente")
-
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('Emp')
-                    ->label("Employé")
-                    ->getStateUsing(function($record){
-
-                        $Em=Vendeur::join("employes","employes.id","vendeurs.employe_id")
-                                 ->where("vendeurs.id",$record->vendeur_id)
-                                 ->first();
-
-                        if($Em){
-                            return $Em->nom." ".$Em->postnom." ".$Em->prenom;
-                        }else{
-                            return "";
-                        }
-                    })
-                    ->placeholder("pas d'employé")
-
+                Tables\Columns\TextColumn::make('vendeur.nom')
+                    ->label("Vendeur")
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label("Enregistré le")
