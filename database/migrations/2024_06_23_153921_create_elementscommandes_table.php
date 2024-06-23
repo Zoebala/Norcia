@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger("commande_id");
             $table->unsignedBigInteger("produit_id");
             $table->Integer("qte");
+            $table->Integer("total");
             $table->timestamps();
         });
     }

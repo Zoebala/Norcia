@@ -36,7 +36,6 @@ class ListSorties extends ListRecords
                    $query->whereRaw("Date(sorties.created_at)=DATE(now())");
 
                 })->badge(Sortie::query()
-                 ->join("elementssorties","elementssorties.sortie_id","sorties.id")
                 ->whereRaw("Date(sorties.created_at)=DATE(now())")->count())
                 ->icon("heroicon-o-users"),
                 "$Annee->lib"=>Tab::make()
@@ -45,11 +44,10 @@ class ListSorties extends ListRecords
                 $query->where("annee_id",session("Annee_id") ?? 1);
 
                 })->badge(Sortie::query()
-                ->join("elementssorties","elementssorties.sortie_id","sorties.id")
                 ->where("annee_id",session("Annee_id") ?? 1)->count())
                 ->icon("heroicon-o-calendar-days"),
                 'Toutes'=>Tab::make()
-                ->badge(Sortie::query()->join("elementssorties","elementssorties.sortie_id","sorties.id")->count()),
+                ->badge(Sortie::query()->count()),
 
             ];
 

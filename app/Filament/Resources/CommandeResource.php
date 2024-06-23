@@ -16,8 +16,10 @@ use App\Models\Departement;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Repeater;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Columns\SelectColumn;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\CommandeResource\Pages;
@@ -66,20 +68,39 @@ class CommandeResource extends Resource
                             ->preload()
                             ->searchable()
                             ->required(),
-                    Select::make('produit_id')
-                        ->label("Produit")
-                        ->options(function(Get $get){
-                            return Produit::whereActif(1)
-                                          ->pluck("lib","id");
-                        })
-                        ->preload()
-                        ->searchable()
-                        ->required(),
-                    TextInput::make('qte')
-                        ->label("Quantité")
-                        ->required()
-                        ->placeholder("Ex: 45")
-                        ->numeric(),
+                    Repeater::make("elementscommande")
+                    ->label("élément commande")
+                    ->relationship()
+                    ->schema([
+
+                        Select::make('produit_id')
+                            ->label("Produit")
+                            ->options(function(Get $get){
+                                return Produit::whereActif(1)
+                                              ->pluck("lib","id");
+                            })
+                            ->preload()
+                            ->searchable()
+                            ->required(),
+                        TextInput::make('qte')
+                            ->label("Quantité")
+                            ->required()
+                            ->placeholder("Ex: 45")
+                            ->live()
+                            ->afterStateUpdated(function(Get $get, Set $set, $state){
+
+                                $Produit=Produit::find($get("produit_id"));
+                                $set("total",$state * $Produit->prix);
+
+                            })
+                            ->placeholder("Ex: 10"),
+                        TextInput::make("total")
+                            ->disabled()
+                            ->required()
+                            ->dehydrated()
+                            // ->live()
+                            ->suffix(" FC"),
+                    ])->columnSpanFull()->columns(3),
                 ])->columns(2)
             ]);
     }
@@ -98,23 +119,15 @@ class CommandeResource extends Resource
                     "Livrée"=>"Livrée",
                 ])
                 ->default("Active")
-                ->preload()
                 ->searchable(),
                 TextColumn::make('client.nom')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('produit.lib')
-                    ->label("Produit")
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('qte')
-                    ->label("Quantité")
-                    ->numeric()
-                    ->sortable(),
                 TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label("Enregistrée le")
+                    ->dateTime("d/m/Y à H:i:s")
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: false),
                 TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
@@ -124,7 +137,11 @@ class CommandeResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                ActionGroup::make([
+
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])->button()->label("Actions")
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

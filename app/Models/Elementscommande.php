@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Elementscommande extends Model
 {
     use HasFactory;
-    protected $gillable=["produit_id","commande_id","qte","created_at","updated_at"];
+    protected $fillable=["commande_id","produit_id","total","qte","created_at","updated_at"];
 
     public function commande():BelongsTo
     {
