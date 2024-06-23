@@ -6,6 +6,7 @@ use App\Models\Entree;
 use App\Models\Sortie;
 use App\Models\Employe;
 use App\Models\Produit;
+use App\Models\Commande;
 use App\Models\Presence;
 use App\Models\Pointvente;
 use App\Models\Production;
@@ -22,22 +23,23 @@ class StatAdminOverview extends BaseWidget
     {
         return [
             //
-            Stat::make("Produits", Produit::where("annee_id",session("Annee_id")??1)->count())
-            ->description("Nos Produits")
-            ->color("success")
-            ->chart([34,2,5,23])
-            ->Icon("heroicon-o-shopping-bag"),
             Stat::make("Points de Vente", Pointvente::where("annee_id",session("Annee_id")??1)->count())
             ->description("Nos Points de Vente")
             ->color("success")
             ->chart([34,2,5,23])
             ->Icon("heroicon-o-home-modern"),
             Stat::make("Présence Journalière", Presence::where("annee_id",session("Annee_id")?? 1)
-                                                        ->whereRaw("Date(presences.created_at)=DATE(now())")->count())
+            ->whereRaw("Date(presences.created_at)=DATE(now())")->count())
             ->description("Nombre d'employés présent")
             ->color("success")
             ->chart([34,2,5,23])
             ->Icon("heroicon-o-calendar-days"),
+            Stat::make("Commande Journalière", Commande::where("annee_id",session("Annee_id")??1)
+                                             ->whereRaw("Date(commandes.created_at)=DATE(now())")->count())
+            ->description("Les commandes de clients")
+            ->color("danger")
+            ->chart([34,2,5,23])
+            ->Icon("heroicon-o-rectangle-stack"),
             Stat::make("Entrées Journalières", Entree::where("annee_id",session("Annee_id")?? 1)
                                                        ->whereRaw("Date(entrees.created_at)=DATE(now())")->count())
             ->description("Nombre d'entrées de la journée")
