@@ -7,6 +7,7 @@ use Filament\Tables;
 use App\Models\Annee;
 use App\Models\Sortie;
 use App\Models\Produit;
+use App\Models\Vendeur;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Forms\Form;
@@ -19,8 +20,8 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
-use Filament\Tables\Actions\ActionGroup;
 
+use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\SortieResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -82,6 +83,21 @@ class SortieResource extends Resource
                         })
                         ->searchable()
                         ->required(),
+                    Select::make("vendeur_id")
+                        ->label("Vendeur")
+                        ->options(Vendeur::all()->pluck("nom","id"))
+                        ->preload()
+                        ->live()
+                        ->afterStateUpdated(function($state){
+                            if(session("vendeur_id") == null){
+                                session()->push("vendeur_id",$state);
+                            }else{
+                                session()->pull("vendeur_id");
+                                session()->push("vendeur_id",$state);
+                            }
+                        })
+                        ->searchable()
+                        ->required(),
 
                     Repeater::make("elementssortie")
                         ->label("Elements Sortie")
@@ -133,9 +149,11 @@ class SortieResource extends Resource
                                 ->label("Produit")
                                 ->live()
                                 ->options(function(Get $get){
-                                    return Produit::where("annee_id",session('Annee_id'))
-                                                 ->whereDepartement_id(session("departement_id"))
-                                                 ->pluck("lib","id");
+                                    return Produit::join("elementsstocks","elementsstocks.produit_id","produits.id")
+                                                    ->where("annee_id",session('Annee_id'))
+                                                    ->whereDepartement_id(session("departement_id"))
+                                                    ->whereVendeur_id(session("vendeur_id"))
+                                                    ->pluck("produits.lib","produits.id");
                                 })->preload()
                                 ->searchable()
                                 ->afterStateUpdated(function(Set $set){
@@ -188,7 +206,7 @@ class SortieResource extends Resource
                             return $data;
                     })->columnSpanFull()
                     ->columns(3),
-                ])->columns(2)
+                ])->columns(3)
             ]);
     }
 
@@ -196,12 +214,15 @@ class SortieResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('annee.lib')
-                    ->label("Année")
-                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('departement.lib')
                     ->label("Département")
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('vendeur.nom')
+                    ->label("Vendeur")
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label("Enregistrée le")
                     ->dateTime("d/m/Y à H:i:s")

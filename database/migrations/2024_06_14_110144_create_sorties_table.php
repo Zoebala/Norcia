@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('sorties', function (Blueprint $table) {
             $table->id();
-           
+
             $table->unsignedBigInteger("departement_id");
+            $table->unsignedBigInteger("vendeur_id");
             $table->unsignedBigInteger("annee_id");
             $table->timestamps();
         });

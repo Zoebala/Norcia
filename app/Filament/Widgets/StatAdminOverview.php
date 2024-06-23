@@ -61,11 +61,11 @@ class StatAdminOverview extends BaseWidget
             ->color("danger")
             ->chart([34,2,5,23])
             ->Icon("heroicon-o-shopping-bag"),
-            Stat::make("Chiffre d'affaire journalier",Sortie::join("elementssorties","elementssorties.sortie_id","sorties.id")
+            Stat::make("Chiffre d'affaires journalières",Sortie::join("elementssorties","elementssorties.sortie_id","sorties.id")
                                                                 ->where("annee_id",session("Annee_id")?? 1)
                                                                 ->whereRaw("Date(sorties.created_at)=DATE(now())")
                                                                 ->SUM("total")." FC")
-            ->description("Chiffre d'affaires journalier")
+            ->description("Chiffre d'affaires journalières")
             ->color("success")
             ->chart([34,2,5,23])
             ->Icon("heroicon-o-banknotes"),
