@@ -214,6 +214,7 @@ class ProduitResource extends Resource
     {
         return [
             //
+         
         ];
     }
 
