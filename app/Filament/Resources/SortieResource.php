@@ -13,14 +13,15 @@ use Filament\Forms\Set;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\Departement;
+use App\Models\Elementsstock;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
-use Filament\Notifications\Notification;
 
+use Filament\Notifications\Notification;
 use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\SortieResource\Pages;
@@ -107,33 +108,38 @@ class SortieResource extends Resource
                             ->label(function(Get $get){
                                 return "Etat en Stock";
                             })
-                            ->placeholder(function(Get $get){
+                            ->placeholder(function(Get $get, Set $set){
 
                                 $chaine="";
                                 if(session("departement_id") !=null && filled($get('produit_id'))){
 
                                     $Produit=Produit::find($get('produit_id'));
+                                    $ProduitVendeur=Elementsstock::whereVendeur_id(session("vendeur_id"))
+                                                            ->whereProduit_id($get('produit_id'))
+                                                            ->first();
+
 
                                     if(!$get("qte")){
-                                        $chaine="Nom du Produit : $Produit->lib  |   Quantité en Stock : $Produit->qte | Valeur en Stock : ".$Produit->prix * $Produit->qte." FC";
+                                        $chaine="Nom du Produit : $Produit->lib  |   Quantité en Stock : $ProduitVendeur->qte | Valeur en Stock : ".$ProduitVendeur->total." FC";
 
                                     }else{
-                                        $PQ=(int)$Produit->qte;
+                                        $PQ=(int)$ProduitVendeur->qte;
                                         $Qte=(int)$get("qte");
                                         $Reste=$PQ-$Qte;
-                                        $chaine="Nom du Produit : $Produit->lib  |   Quantité en Stock : $Produit->qte | Valeur en Stock : ".$Produit->prix * $Produit->qte." FC | Reste : ".$Reste." | Valeur Restante ".$Produit->prix*$Reste." FC";
+                                        $chaine="Nom du Produit : $Produit->lib  |   Quantité en Stock : $ProduitVendeur->qte | Valeur en Stock : ".$ProduitVendeur->total." FC | Reste : ".$Reste." | Valeur Restante ".$Produit->prix*$Reste." FC";
+                                        if($Reste < $get('qte')){
+                                            $set('qte',null);
+                                            Notification::make()
+                                                        ->title("La quantité saisie est supérieure à la quantité en stock")
+                                                        ->warning()
+                                                        ->send();
+                                        }
                                     }
 
                                     return $chaine;
                                 }
 
-                                // if(session("departement_id") !=null && filled($get('produit_id')) && filled($get("qte"))){
 
-                                //     $Produit=Produit::find($get('produit_id'));
-                                //     $chaine +=;
-
-                                //     return $chaine;
-                                // }
 
                             })->visibleOn("create")
                             ->hidden(function(Get $get){
@@ -194,15 +200,19 @@ class SortieResource extends Resource
 
 
                        ])->mutateRelationshipDataBeforeCreateUsing(function (array $data): array {
-                            //identificaton du produit sorti
-                            $Produit=Produit::find($data['produit_id']);
-                            //Dimunition en stock des produits sortis
-                            Produit::whereId($data['produit_id'])
-                            ->update([
-                                'qte'=>$Produit->qte-$data["qte"],
-                            ]);
 
+                            //identificaton du stock vendeur réalisant la sortie/vente
+                            $ProduitVendeur=Elementsstock::whereVendeur_id(session("vendeur_id"))
+                                                            ->whereProduit_id($data['produit_id'])
+                                                            ->first();
+                            //Dimunition en stock vendeur sorti
+                            Elementsstock::whereVendeur_id(session("vendeur_id"))
+                                         ->whereId($data['produit_id'])
+                                         ->update([
+                                            'qte'=>$ProduitVendeur->qte-$data["qte"],
+                                         ]);
 
+                            //enregistrement de l'opération de sortie
                             return $data;
                     })->columnSpanFull()
                     ->columns(3),
