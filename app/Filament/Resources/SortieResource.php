@@ -127,14 +127,9 @@ class SortieResource extends Resource
                                         $PQ=(int)$ProduitVendeur->qte;
                                         $Qte=(int)$get("qte");
                                         $Reste=$PQ-$Qte;
+
                                         $chaine="Nom du Produit : $Produit->lib  |   Quantité en Stock : $ProduitVendeur->qte | Valeur en Stock : ".$ProduitVendeur->total." FC | Reste : ".$Reste." | Valeur Restante ".$Produit->prix*$Reste." FC";
-                                        if($Reste < $get('qte')){
-                                            $set('qte',null);
-                                            Notification::make()
-                                                        ->title("La quantité saisie est supérieure à la quantité en stock")
-                                                        ->warning()
-                                                        ->send();
-                                        }
+                                        
                                     }
 
                                     return $chaine;
@@ -175,19 +170,21 @@ class SortieResource extends Resource
                                 ->afterStateUpdated(function(Get $get, Set $set, $state){
 
                                     $Produit=Produit::find($get("produit_id"));
+                                    $ProduitVendeur=Elementsstock::whereVendeur_id(session("vendeur_id"))
+                                                            ->whereProduit_id($get('produit_id'))
+                                                            ->first();
 
                                     // $set("Total",$state * $Produit->prix);
                                     $set("total",$state * $Produit->prix);
-
-                                    if($state>$Produit->qte){
-
+                                    if($state>$ProduitVendeur->qte){
                                         $set("qte",null);
-
                                         Notification::make()
-                                                    ->title("La quantité saisie dépasse la quantité en stock")
+                                                    ->title("La quantité saisie est supérieure à la quantité en stock")
                                                     ->warning()
                                                     ->send();
                                     }
+
+
 
                                 })
                                 ->placeholder("Ex: 10"),
