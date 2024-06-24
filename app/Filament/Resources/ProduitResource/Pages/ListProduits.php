@@ -9,8 +9,10 @@ use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ProduitResource;
 use Filament\Resources\Pages\ListRecords\Tab;
+use App\Filament\Resources\ProduitResource\Widgets\Produitchart;
 use App\Filament\Resources\ProduitResource\Widgets\StatProduitAdmin;
 use App\Filament\Resources\ProduitResource\Widgets\Produitvenduschart;
+use App\Filament\Resources\ProduitResource\Widgets\Caffaireproduitchart;
 use App\Filament\Resources\ProduitResource\Widgets\CaffaireProduitsvendus;
 
 class ListProduits extends ListRecords
@@ -55,6 +57,8 @@ class ListProduits extends ListRecords
             StatProduitAdmin::class,
             Produitvenduschart::class,
             CaffaireProduitsvendus::class,
+            Produitchart::class,
+            Caffaireproduitchart::class,
 
         ];
     }
@@ -63,6 +67,8 @@ class ListProduits extends ListRecords
     {
         return [
             StatProduitAdmin::class,
+            Produitchart::class,
+            Caffaireproduitchart::class,
         ];
     }
 }
