@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\SortieResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\SortieResource\RelationManagers;
+use App\Filament\Resources\SortieResource\RelationManagers\ElementssortieRelationManager;
 
 class SortieResource extends Resource
 {
@@ -265,6 +266,7 @@ class SortieResource extends Resource
     {
         return [
             //
+            ElementssortieRelationManager::class,
         ];
     }
 
