@@ -11,7 +11,8 @@ use Filament\Resources\Resource;
 use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
-use Spatie\Permission\Models\Permission;
+use Filament\Tables\Actions\ActionGroup;
+use App\Models\Permission;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PermissionResource\Pages;
@@ -45,7 +46,7 @@ class PermissionResource extends Resource
                    ->unique(ignoreRecord:true,table: Permission::class)
                    ->placeholder("Ex: Create Etudiants"),
 
-               ]),
+               ])->columns(2),
             ]);
     }
 
@@ -63,7 +64,11 @@ class PermissionResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                ActionGroup::make([
+
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])->button()->label("Actions")
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

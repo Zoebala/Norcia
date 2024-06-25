@@ -90,13 +90,14 @@ class SortieResource extends Resource
                         ->options(Vendeur::all()->pluck("nom","id"))
                         ->preload()
                         ->live()
-                        ->afterStateUpdated(function($state){
+                        ->afterStateUpdated(function($state,Set $set){
                             if(session("vendeur_id") == null){
                                 session()->push("vendeur_id",$state);
                             }else{
                                 session()->pull("vendeur_id");
                                 session()->push("vendeur_id",$state);
                             }
+                            
                         })
                         ->searchable()
                         ->required(),
@@ -129,7 +130,7 @@ class SortieResource extends Resource
                                         $Reste=$PQ-$Qte;
 
                                         $chaine="Nom du Produit : $Produit->lib  |   Quantité en Stock : $ProduitVendeur->qte | Valeur en Stock : ".$ProduitVendeur->total." FC | Reste : ".$Reste." | Valeur Restante ".$Produit->prix*$Reste." FC";
-                                        
+
                                     }
 
                                     return $chaine;

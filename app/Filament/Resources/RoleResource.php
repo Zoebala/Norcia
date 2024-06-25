@@ -8,7 +8,8 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
-use Spatie\Permission\Models\Role;
+use App\Models\Role;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
@@ -47,6 +48,12 @@ class RoleResource extends Resource
                                     ->minlength(3)
                                     ->required()
                                     ->maxlength(255),
+                            Select::make("permissions")
+                            ->label("Permission")
+                            ->searchable()
+                            ->preload()
+                            ->multiple()
+                            ->relationship("permissions","name")
 
                        ])->columns(2),
             ]);
@@ -61,6 +68,13 @@ class RoleResource extends Resource
                 ->label("Rôle")
                 ->searchable()
                 ->sortable(),
+                TextColumn::make("permissions.name")
+                ->label("Permissions")
+                ->formatStateUsing(function($state){
+                    return substr($state,0,85)."...";
+                })
+                ->searchable(),
+
             ])
             ->filters([
                 //
