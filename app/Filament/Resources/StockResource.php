@@ -258,7 +258,7 @@ class StockResource extends Resource
                     ->dateTime("d/m/Y à H:i:s")
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])->defaultSort('created_at', 'desc')
+            ])->defaultSort('stocks.created_at', 'desc')
             ->filters([
                 //
             ])

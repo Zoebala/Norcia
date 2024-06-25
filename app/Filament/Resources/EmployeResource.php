@@ -373,7 +373,7 @@ class EmployeResource extends Resource
                                 'arrivee' => now(),
                                 'BtnArrivee' => 1,
                                 'status' => 'présent(e)',
-                                'annee_id' => session('Annee_id') ?? 1,
+                                'annee_id' => session('Annee_id')[0] ?? 1,
                             ]);
 
                             Notification::make()
@@ -390,7 +390,7 @@ class EmployeResource extends Resource
                                     'arrivee' => now(),
                                     'BtnArrivee' => 1,
                                     'status' => 'présent(e)',
-                                    'annee_id' => session('Annee_id') ?? 1,
+                                    'annee_id' => session('Annee_id')[0] ?? 1,
                                 ]);
 
                                 Notification::make()

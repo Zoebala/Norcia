@@ -5,6 +5,7 @@ namespace App\Filament\Resources\StockResource\Pages;
 use App\Models\Annee;
 use App\Models\Stock;
 use Filament\Actions;
+use App\Models\Vendeur;
 use App\Filament\Resources\StockResource;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
@@ -50,6 +51,19 @@ class ListStocks extends ListRecords
                 ->icon("heroicon-o-calendar-days"),
                 'Toutes'=>Tab::make()
                 ->badge(Stock::query()->join("elementsstocks","elementsstocks.stock_id","stocks.id")->count()),
+                'Critiques'=>Tab::make()
+                ->modifyQueryUsing(function(Builder $query)
+                {
+                     $query->join("vendeurs","vendeurs.id","stocks.vendeur_id")
+                            ->join("elementsstocks","elementsstocks.stock_id","stocks.id")
+                            ->where("qte","<",10)
+                            ->where("annee_id",session("Annee_id") ?? 1);
+
+                })
+                ->badge(Vendeur::join("stocks","stocks.vendeur_id","vendeurs.id")
+                ->join("elementsstocks","elementsstocks.stock_id","stocks.id")
+                ->where("qte","<",10)
+                 ->where("annee_id",session("Annee_id")??1)->count()),
 
             ];
 

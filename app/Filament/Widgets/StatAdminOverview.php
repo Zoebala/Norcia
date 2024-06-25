@@ -25,6 +25,7 @@ class StatAdminOverview extends BaseWidget
         return [
             //
             Stat::make("Présence Journalière", Presence::where("annee_id",session("Annee_id")?? 1)
+            ->where("BtnArrivee",1)
             ->whereRaw("Date(presences.created_at)=DATE(now())")->count())
             ->description("Nombre d'employés présent")
             ->color("success")
