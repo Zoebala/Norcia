@@ -61,7 +61,10 @@ class ProductionResource extends Resource
                                     $Produit=Produit::find($get('produit_id'));
 
                                     if(!$get("qte")){
-                                        $chaine="Nom du Produit : $Produit->lib  |   Quantité en Stock : $Produit->qte | Valeur en Stock : ".$Produit->prix * $Produit->qte." FC";
+                                        if($Produit==null)
+                                            return $chaine;
+                                        else
+                                            $chaine="Nom du Produit : $Produit->lib  |   Quantité en Stock : $Produit->qte | Valeur en Stock : ".$Produit->prix * $Produit->qte." FC";
 
                                     }else{
                                         $PQ=(int)$Produit->qte;
