@@ -97,7 +97,7 @@ class SortieResource extends Resource
                                 session()->pull("vendeur_id");
                                 session()->push("vendeur_id",$state);
                             }
-                            
+
                         })
                         ->searchable()
                         ->required(),
@@ -122,7 +122,10 @@ class SortieResource extends Resource
 
 
                                     if(!$get("qte")){
-                                        $chaine="Nom du Produit : $Produit->lib  |   Quantité en Stock : $ProduitVendeur->qte | Valeur en Stock : ".$ProduitVendeur->total." FC";
+                                        if($ProduitVendeur==null)
+                                            return $chaine;
+                                        else
+                                          $chaine="Nom du Produit : $Produit->lib  |   Quantité en Stock : $ProduitVendeur->qte | Valeur en Stock : ".$ProduitVendeur->total." FC";
 
                                     }else{
                                         $PQ=(int)$ProduitVendeur->qte;
@@ -153,7 +156,6 @@ class SortieResource extends Resource
                                 ->live()
                                 ->options(function(Get $get){
                                     return Produit::join("elementsstocks","elementsstocks.produit_id","produits.id")
-                                                    ->where("annee_id",session('Annee_id'))
                                                     ->whereDepartement_id(session("departement_id"))
                                                     ->whereVendeur_id(session("vendeur_id"))
                                                     ->pluck("produits.lib","produits.id");
