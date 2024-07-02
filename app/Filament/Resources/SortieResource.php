@@ -122,8 +122,10 @@ class SortieResource extends Resource
 
 
                                     if(!$get("qte")){
-                                        if($ProduitVendeur==null)
+                                        if($ProduitVendeur==null){
+                                            $chaine="Veuillez choisir un vendeur s'il vous plait";
                                             return $chaine;
+                                        }
                                         else
                                           $chaine="Nom du Produit : $Produit->lib  |   Quantité en Stock : $ProduitVendeur->qte | Valeur en Stock : ".$ProduitVendeur->total." FC";
 
