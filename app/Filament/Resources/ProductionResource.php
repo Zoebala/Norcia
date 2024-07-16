@@ -123,6 +123,7 @@ class ProductionResource extends Resource
                         ->label("Quantité")
                         ->required()
                         ->numeric()
+                        ->disabled(fn(Get $get):bool=> !filled($get("produit_id")))
                         ->live()
                         ->afterStateUpdated(function($state){
                             if(session("qte") == null){
@@ -192,6 +193,7 @@ class ProductionResource extends Resource
                             TextInput::make("qte")
                                 ->label("Quantité")
                                 ->required()
+                                ->disabled(fn(Get $get):bool=> !filled($get("elementsentree_id")))
                                 ->placeholder("Ex: 12")
                                 ->numeric()
                                 ->live()

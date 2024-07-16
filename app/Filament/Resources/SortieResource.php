@@ -124,6 +124,8 @@ class SortieResource extends Resource
                                     if(!$get("qte")){
                                         if($ProduitVendeur==null){
                                             $chaine="Veuillez choisir un vendeur s'il vous plait";
+                                            $set("produit_id",null);
+                                            $set("qte",null);
                                             return $chaine;
                                         }
                                         else
@@ -132,6 +134,8 @@ class SortieResource extends Resource
                                     }else{
                                         if($ProduitVendeur==null){
                                             $chaine="Veuillez choisir un vendeur s'il vous plait";
+                                            $set("produit_id",null);
+                                            $set("qte",null);
                                             return $chaine;
                                         }
                                         $PQ=(int)$ProduitVendeur->qte;
@@ -176,6 +180,7 @@ class SortieResource extends Resource
                                 ->numeric()
                                 ->required()
                                 ->live()
+                                ->disabled(fn(Get $get):bool=> !filled($get("produit_id")))
                                 ->afterStateUpdated(function(Get $get, Set $set, $state){
 
                                     $Produit=Produit::find($get("produit_id"));
