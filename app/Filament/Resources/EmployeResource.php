@@ -443,7 +443,7 @@ class EmployeResource extends Resource
                                 'status'=>'absent(e)',
                                 'Observation' => $data["Observation"],
                                 'BtnArrivee' => 0,
-                                'annee_id' => session('Annee_id') ?? 1,
+                                'annee_id' =>(int) session('Annee_id') ?? 1,
                             ]);
 
                             Notification::make()
@@ -466,7 +466,7 @@ class EmployeResource extends Resource
                                 'Observation' => $data["Observation"],
                                 'BtnArrivee' => 0,
                                 'status' =>"absent(e)",
-                                'annee_id' => session('Annee_id') ?? 1,
+                                'annee_id' => (int) session('Annee_id') ?? 1,
                             ]);
                             Notification::make()
                             ->title("l'absence de l'employé $employe->nom $employe->postnom signalée avec succès")

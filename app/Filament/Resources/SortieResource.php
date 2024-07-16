@@ -127,14 +127,18 @@ class SortieResource extends Resource
                                             return $chaine;
                                         }
                                         else
-                                          $chaine="Nom du Produit : $Produit->lib  |   Quantité en Stock : $ProduitVendeur->qte | Valeur en Stock : ".$ProduitVendeur->total." FC";
+                                          $chaine="Nom du Produit : $Produit->lib  |   Quantité en Stock : $ProduitVendeur->qte | Valeur en Stock : ".$ProduitVendeur->qte*$Produit->prix." FC";
 
                                     }else{
+                                        if($ProduitVendeur==null){
+                                            $chaine="Veuillez choisir un vendeur s'il vous plait";
+                                            return $chaine;
+                                        }
                                         $PQ=(int)$ProduitVendeur->qte;
                                         $Qte=(int)$get("qte");
                                         $Reste=$PQ-$Qte;
 
-                                        $chaine="Nom du Produit : $Produit->lib  |   Quantité en Stock : $ProduitVendeur->qte | Valeur en Stock : ".$ProduitVendeur->total." FC | Reste : ".$Reste." | Valeur Restante ".$Produit->prix*$Reste." FC";
+                                        $chaine="Nom du Produit : $Produit->lib  |   Quantité en Stock : $ProduitVendeur->qte | Valeur en Stock : ".$ProduitVendeur->qte*$Produit->prix." FC | Reste : ".$Reste." | Valeur Restante ".$Produit->prix*$Reste." FC";
 
                                     }
 
