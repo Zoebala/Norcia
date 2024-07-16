@@ -147,6 +147,7 @@ class StockResource extends Resource
                                 ->searchable(),
                             TextInput::make("qte")
                                 ->label("Quantité")
+                                ->disabled(fn(Get $get):bool=> !filled($get("produit_id")))
                                 ->numeric()
                                 ->placeholder("Ex: 35")
                                 ->live()
