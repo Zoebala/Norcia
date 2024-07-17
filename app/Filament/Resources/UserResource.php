@@ -150,4 +150,15 @@ class UserResource extends Resource
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
+
+    public static function getEloquentQuery(): Builder
+    {
+        if(!Auth()->user()->hasRole(["Admin"])){
+
+            return parent::getEloquentQuery()->where("id",Auth()->user()->id);
+        }else{
+            return parent::getEloquentQuery();
+
+        }
+    }
 }

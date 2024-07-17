@@ -13,6 +13,18 @@ class Ventedepartementchart extends ChartWidget
     protected static bool $isLazy = false;
     protected static ?int $sort = 10;
 
+    public static function canView(): bool
+    {
+        // Votre logique de contrôle d'accès ici
+        if(Auth()->user()->hasRole(["Admin","PDG","DCom"])){
+
+            return true; // ou false selon vos besoins
+        }else{
+
+            return false;
+        }
+    }
+
     protected function getData(): array
     {
         $Departements=Departement::get("lib");

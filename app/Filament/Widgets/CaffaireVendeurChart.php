@@ -11,6 +11,17 @@ class CaffaireVendeurChart extends ChartWidget
     protected static ?string $heading = 'Chiffre d\'affaires journalières par Vendeur';
     protected static bool $isLazy = false;
     protected static ?int $sort = 40;
+    public static function canView(): bool
+    {
+        // Votre logique de contrôle d'accès ici
+        if(Auth()->user()->hasRole(["Admin","PDG","DCom"])){
+
+            return true; // ou false selon vos besoins
+        }else{
+
+            return false;
+        }
+    }
 
     protected function getData(): array
     {
