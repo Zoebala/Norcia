@@ -71,7 +71,7 @@ class RoleResource extends Resource
                 TextColumn::make("permissions.name")
                 ->label("Permissions")
                 ->formatStateUsing(function($state){
-                    return substr($state,0,85)."...";
+                    return substr($state,0,70)."...";
                 })
                 ->searchable(),
 
