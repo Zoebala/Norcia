@@ -22,23 +22,23 @@
     <!-- /Hero Section -->
 
     <!-- Get Started Section -->
+    @include("template.portions.service_onglets")
+    @include("template.portions.produits")
+    @include("template.portions.service")
     @include("template.portions.t_contact")
     <!-- /Get Started Section -->
 
     <!-- Services Section -->
-    @include("template.portions.service")
     <!-- /Services Section -->
 
 
 
 
     <!-- Features Section -->
-    @include("template.portions.service_onglets")
 
     <!-- /Features Section -->
 
     <!-- Projects Section -->
-    @include("template.portions.produits")
     <!-- /Projects Section -->
 
     <!-- Testimonials Section -->

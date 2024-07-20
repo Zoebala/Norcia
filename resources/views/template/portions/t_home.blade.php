@@ -29,7 +29,16 @@
       <div class="carousel-item">
         <img src="template/assets/img/hero-carousel/hero_4.jpg" alt="">
       </div>
+      <div class="carousel-item">
+        <img src="template/assets/img/hero-carousel/hero_6.jpeg" alt="">
+      </div>
 
+      <div class="carousel-item">
+        <img src="template/assets/img/hero-carousel/hero_8.jpeg" alt="">
+      </div>
+      <div class="carousel-item">
+        <img src="template/assets/img/hero-carousel/hero_7.jpeg" alt="">
+      </div>
       <div class="carousel-item">
         <img src="template/assets/img/hero-carousel/hero_5.jpg" alt="">
       </div>
