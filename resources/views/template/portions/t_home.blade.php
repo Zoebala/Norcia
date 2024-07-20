@@ -15,23 +15,23 @@
     <div id="hero-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
 
       <div class="carousel-item">
-        <img src="template/assets/img/hero-carousel/hero-carousel-1.jpg" alt="">
+        <img src="template/assets/img/hero-carousel/hero_1.jpg" alt="">
       </div>
 
       <div class="carousel-item active">
-        <img src="template/assets/img/hero-carousel/hero-carousel-2.jpg" alt="">
+        <img src="template/assets/img/hero-carousel/hero_2.jpg" alt="">
       </div>
 
       <div class="carousel-item">
-        <img src="template/assets/img/hero-carousel/hero-carousel-3.jpg" alt="">
+        <img src="template/assets/img/hero-carousel/hero_3.jpg" alt="">
       </div>
 
       <div class="carousel-item">
-        <img src="template/assets/img/hero-carousel/hero-carousel-4.jpg" alt="">
+        <img src="template/assets/img/hero-carousel/hero_4.jpg" alt="">
       </div>
 
       <div class="carousel-item">
-        <img src="template/assets/img/hero-carousel/hero-carousel-5.jpg" alt="">
+        <img src="template/assets/img/hero-carousel/hero_5.jpg" alt="">
       </div>
 
       <a class="carousel-control-prev" href="#hero-carousel" role="button" data-bs-slide="prev">

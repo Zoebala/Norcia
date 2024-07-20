@@ -14,11 +14,11 @@
             <!-- Page Title -->
             <div class="page-title" style="background-image: url(template/assets/img/page-title-bg.jpg);">
               <div class="container position-relative">
-                <h1>About</h1>
+                <h1>{{ $pageTitle }}</h1>
                 <nav class="breadcrumbs">
                   <ol>
-                    <li><a href="index.html">Home</a></li>
-                    <li class="current">About</li>
+                    <li><a href="/">Accueil</a></li>
+                    <li class="current">{{ $pageTitle }}</li>
                   </ol>
                 </nav>
               </div>

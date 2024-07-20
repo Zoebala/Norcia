@@ -8,9 +8,12 @@ class Apropos extends Component
 {
     public $page_title="Apropos";
 
-  
+
     public function render()
     {
-        return view('livewire.apropos');
+        return view('livewire.apropos')->layoutData([
+            "title"=>"Apropos",
+            "pageTitle"=>$this->page_title,
+        ]);
     }
 }
