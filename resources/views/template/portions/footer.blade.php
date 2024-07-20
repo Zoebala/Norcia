@@ -87,6 +87,18 @@
 
   <!-- Main JS File -->
   <script src="template/assets/js/main.js"></script>
+  <script src="js/typed.js"></script>
+   <script>
+            var typed = new Typed('.typed-words', {
+            strings: ["Norcia Business Group"," Etancher votre soif"," la plus profonde"],
+            typeSpeed: 80,
+            backSpeed: 80,
+            backDelay: 4000,
+            startDelay: 1000,
+            loop: true,
+            showCursor: true
+            });
+    </script>
 
 </body>
 
