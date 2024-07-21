@@ -1,136 +1,57 @@
 <div>
-        @include("template.portions.service_onglets")
-        <!-- Services Section -->
-        <section id="services" class="services section">
+    <section id="features" class="features section">
 
-          <div class="container">
+        <div class="container">
 
-            <div class="row gy-4">
+          <ul class="nav nav-tabs row  g-2 d-flex" data-aos="fade-up" data-aos-delay="100" role="tablist">
 
-              <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                <div class="service-item  position-relative">
-                  <div class="icon">
-                    <i class="fa-solid fa-mountain-city"></i>
-                  </div>
-                  <h3>Nesciunt Mete</h3>
-                  <p>Provident nihil minus qui consequatur non omnis maiores. Eos accusantium minus dolores iure perferendis tempore et consequatur.</p>
-                  <a href="#" class="readmore stretched-link">Read more <i class="bi bi-arrow-right"></i></a>
+
+            @foreach ($departements as $depart)
+
+                <li class="nav-item col-3" role="presentation">
+                <a class="nav-link {{ $loop->first ? 'active show':'' }}" data-bs-toggle="tab" data-bs-target="#features-tab-{{ $depart->id }}" aria-selected="false" tabindex="-1" role="tab">
+                    <h4>{{ $depart->lib }}</h4>
+                </a><!-- End tab nav item -->
+
+                </li>
+            @endforeach
+
+
+          </ul>
+
+          <div class="tab-content" data-aos="fade-up" data-aos-delay="200">
+
+            @foreach ($departements as $depart)
+
+                <div class="tab-pane fade {{ $loop->first ? 'active show':'' }}" id="features-tab-{{ $depart->id }}" role="tabpanel">
+                <div class="row">
+                    <div class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0 d-flex flex-column justify-content-center">
+                    <h3>Description</h3>
+                    <p class="fst-italic">
+                        {{$depart->description}}
+                    </p>
+                    <ul>
+                        <li><i class="bi bi-check2-all"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
+                        <li><i class="bi bi-check2-all"></i> <span>Duis aute irure dolor in reprehenderit in voluptate velit.</span></li>
+                        <li><i class="bi bi-check2-all"></i> <span>Provident mollitia neque rerum asperiores dolores quos qui a. Ipsum neque dolor voluptate nisi sed.</span></li>
+                        <li><i class="bi bi-check2-all"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore eu fugiat nulla pariatur.</span></li>
+                    </ul>
+                    </div>
+                    <div class="col-lg-6 order-1 order-lg-2 text-center">
+                    <img src="{{ 'storage/'.$depart->photo }}" alt="logo" style="height: 500px; width:100%;" class="img-fluid rounded">
+                    </div>
                 </div>
-              </div><!-- End Service Item -->
+                </div><!-- End tab content item -->
+            @endforeach
 
-              <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                <div class="service-item position-relative">
-                  <div class="icon">
-                    <i class="fa-solid fa-arrow-up-from-ground-water"></i>
-                  </div>
-                  <h3>Eosle Commodi</h3>
-                  <p>Ut autem aut autem non a. Sint sint sit facilis nam iusto sint. Libero corrupti neque eum hic non ut nesciunt dolorem.</p>
-                  <a href="#" class="readmore stretched-link">Read more <i class="bi bi-arrow-right"></i></a>
-                </div>
-              </div><!-- End Service Item -->
 
-              <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-                <div class="service-item position-relative">
-                  <div class="icon">
-                    <i class="fa-solid fa-compass-drafting"></i>
-                  </div>
-                  <h3>Ledo Markt</h3>
-                  <p>Ut excepturi voluptatem nisi sed. Quidem fuga consequatur. Minus ea aut. Vel qui id voluptas adipisci eos earum corrupti.</p>
-                  <a href="#" class="readmore stretched-link">Read more <i class="bi bi-arrow-right"></i></a>
-                </div>
-              </div><!-- End Service Item -->
-
-              <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
-                <div class="service-item position-relative">
-                  <div class="icon">
-                    <i class="fa-solid fa-trowel-bricks"></i>
-                  </div>
-                  <h3>Asperiores Commodit</h3>
-                  <p>Non et temporibus minus omnis sed dolor esse consequatur. Cupiditate sed error ea fuga sit provident adipisci neque.</p>
-                  <a href="#" class="readmore stretched-link">Read more <i class="bi bi-arrow-right"></i></a>
-                </div>
-              </div><!-- End Service Item -->
-
-              <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
-                <div class="service-item position-relative">
-                  <div class="icon">
-                    <i class="fa-solid fa-helmet-safety"></i>
-                  </div>
-                  <h3>Velit Doloremque</h3>
-                  <p>Cumque et suscipit saepe. Est maiores autem enim facilis ut aut ipsam corporis aut. Sed animi at autem alias eius labore.</p>
-                  <a href="#" class="readmore stretched-link">Read more <i class="bi bi-arrow-right"></i></a>
-                </div>
-              </div><!-- End Service Item -->
-
-              <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
-                <div class="service-item position-relative">
-                  <div class="icon">
-                    <i class="fa-solid fa-arrow-up-from-ground-water"></i>
-                  </div>
-                  <h3>Dolori Architecto</h3>
-                  <p>Hic molestias ea quibusdam eos. Fugiat enim doloremque aut neque non et debitis iure. Corrupti recusandae ducimus enim.</p>
-                  <a href="#" class="readmore stretched-link">Read more <i class="bi bi-arrow-right"></i></a>
-                </div>
-              </div><!-- End Service Item -->
-
-            </div>
 
           </div>
 
-        </section><!-- /Services Section -->
+        </div>
 
-        <!-- Features Cards Section -->
-        <section id="features-cards" class="features-cards section">
+      </section>
 
-          <div class="container">
-
-            <div class="row gy-4">
-
-              <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                <h3>Quasi eaque omnis</h3>
-                <p>Eius non minus autem soluta ut ui labore omnis quisquam corrupti autem odit voluptas quos commodi magnam occaecati.</p>
-                <ul class="list-unstyled">
-                  <li><i class="bi bi-check2"></i> <span>Ullamco laboris nisi ut aliquip</span></li>
-                  <li><i class="bi bi-check2"></i> <span>Duis aute irure dolor in reprehenderit</span></li>
-                  <li><i class="bi bi-check2"></i> <span>Ullamco laboris nisi ut aliquip ex ea</span></li>
-                </ul>
-              </div><!-- End feature item-->
-
-              <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                <h3>Et nemo dolores consectetur</h3>
-                <p>Ducimus ea quam et occaecati est. Temporibus in soluta labore voluptates aut. Et sit soluta non repellat sed quia dire plovers tradoria</p>
-
-                <ul class="list-unstyled">
-                  <li><i class="bi bi-check2"></i> <span>Enim temporibus maiores eligendi</span></li>
-                  <li><i class="bi bi-check2"></i> <span>Ut maxime ut quibusdam quam qui</span></li>
-                  <li><i class="bi bi-check2"></i> <span>Officiis aspernatur in officiis</span></li>
-                </ul>
-              </div><!-- End feature item-->
-
-              <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
-                <h3>Staque laboriosam modi</h3>
-                <p>Velit eos error et dolor omnis voluptates nobis tenetur sed enim nihil vero qui suscipit ipsum at magni. Ipsa architecto consequatur aliquam</p>
-                <ul class="list-unstyled">
-                  <li><i class="bi bi-check2"></i> <span>Quis voluptates laboriosam numquam</span></li>
-                  <li><i class="bi bi-check2"></i> <span>Debitis eos est est corrupti</span></li>
-                </ul>
-              </div><!-- End feature item-->
-
-              <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
-                <h3>Dignissimos suscipit iste</h3>
-                <p>Molestiae occaecati assumenda quia saepe nobis recusandae at dicta ducimus sequi numquam commodi est in consequatur ea magnam quia itaque</p>
-                <ul class="list-unstyled">
-                  <li><i class="bi bi-check2"></i> <span>Veritatis qui reprehenderit quis</span></li>
-                  <li><i class="bi bi-check2"></i> <span>Accusantium vel numquam sunt minus</span></li>
-                  <li><i class="bi bi-check2"></i> <span>Voluptatem pariatur est sationem</span></li>
-                </ul>
-              </div><!-- End feature item-->
-
-            </div>
-
-          </div>
-
-        </section><!-- /Features Cards Section -->
 
         <!-- Testimonials Section -->
         <section id="testimonials" class="testimonials section">
@@ -168,7 +89,7 @@
                 <div class="swiper-slide">
                   <div class="testimonial-wrap">
                     <div class="testimonial-item">
-                      <img src="template/   assets/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
+                      <img src="template/assets/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
                       <h3>Saul Goodman</h3>
                       <h4>Ceo &amp; Founder</h4>
                       <div class="stars">
@@ -186,7 +107,7 @@
                 <div class="swiper-slide">
                   <div class="testimonial-wrap">
                     <div class="testimonial-item">
-                      <img src="template/   assets/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
+                      <img src="template/assets/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
                       <h3>Sara Wilsson</h3>
                       <h4>Designer</h4>
                       <div class="stars">
@@ -204,7 +125,7 @@
                 <div class="swiper-slide">
                   <div class="testimonial-wrap">
                     <div class="testimonial-item">
-                      <img src="template/   assets/img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
+                      <img src="template/assets/img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
                       <h3>Jena Karlis</h3>
                       <h4>Store Owner</h4>
                       <div class="stars">
@@ -222,7 +143,7 @@
                 <div class="swiper-slide">
                   <div class="testimonial-wrap">
                     <div class="testimonial-item">
-                      <img src="template/   assets/img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
+                      <img src="template/assets/img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
                       <h3>Matt Brandon</h3>
                       <h4>Freelancer</h4>
                       <div class="stars">
@@ -240,7 +161,7 @@
                 <div class="swiper-slide">
                   <div class="testimonial-wrap">
                     <div class="testimonial-item">
-                      <img src="template/   assets/img/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
+                      <img src="template/assets/img/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
                       <h3>John Larson</h3>
                       <h4>Entrepreneur</h4>
                       <div class="stars">
@@ -263,6 +184,6 @@
 
         </section><!-- /Testimonials Section -->
 
-      </main>
+
 
 </div>

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger("annee_id");
             $table->text("description")->nullable();
             $table->boolean("actif")->default(true);
+            $table->text("photo")->nullable();
             $table->timestamps();
         });
     }

@@ -22,7 +22,7 @@
     <!-- /Hero Section -->
 
     <!-- Get Started Section -->
-    @include("template.portions.service_onglets")
+    @livewire("service")
     @include("template.portions.produits")
     @include("template.portions.service")
     @include("template.portions.t_contact")

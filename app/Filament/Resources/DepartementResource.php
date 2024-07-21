@@ -18,6 +18,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Columns\ToggleColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\Wizard\Step;
@@ -86,10 +87,17 @@ class DepartementResource extends Resource
                                 })
                                 ->columnSpan(1),
 
+                                MarkdownEditor::make('description')->columnSpanFull(),
                         ]),
-                        Step::make("Description")
+                        Step::make("Image Département")
                         ->schema([
-                            MarkdownEditor::make('description')->columnSpanFull(),
+                            FileUpload::make("photo")
+                            ->label("Photo")
+                            ->openable()
+                            ->downloadable()
+                            ->columnSpanFull()
+                            ->maxSize("2048")
+                            ->disk("public")->directory("departements"),
                         ])
                     ])->columns(2)->columnSpanFull(),
 
@@ -109,6 +117,12 @@ class DepartementResource extends Resource
                 ->searchable()
                 ->sortable()
                 ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\ImageColumn::make('photo')
+                ->label("Photo")
+                ->placeholder("Pas de Profil")
+                ->searchable()
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: false),
                 TextColumn::make('lib')
                 ->label("Departement")
                 ->searchable()
@@ -116,6 +130,9 @@ class DepartementResource extends Resource
                 TextColumn::make('description')
                     ->label("Description")
                     ->searchable()
+                    ->formatStateUsing(function($state){
+                        return substr($state,0,70)."...";
+                    })
                     ->placeholder("Pas de description"),
                 TextColumn::make('created_at')
                     ->dateTime()
