@@ -23,8 +23,9 @@
 
     <!-- Get Started Section -->
     @livewire("service")
-    @include("template.portions.produits")
-    @include("template.portions.service")
+    @livewire("produit")
+    @livewire("actualite")
+    {{-- @include("template.portions.service") --}}
     @include("template.portions.t_contact")
     <!-- /Get Started Section -->
 
@@ -42,7 +43,7 @@
     <!-- /Projects Section -->
 
     <!-- Testimonials Section -->
-    @include("template.portions.temoignages")
+ 
     <!-- /Testimonials Section -->
 
     <!-- Recent Blog Posts Section -->

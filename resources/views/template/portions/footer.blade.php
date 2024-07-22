@@ -90,7 +90,7 @@
   <script src="js/typed.js"></script>
    <script>
             var typed = new Typed('.typed-words', {
-            strings: ["Norcia Business Group","Vous présente","Norcia Chips","Norcia Juice","Norcia Beauty","Norcia App"],
+            strings: ["Norcia Business Group","Vous présente","Norcia Chips","Norcia Juice","Norcia Beauty","Norcia Apps"],
             typeSpeed: 80,
             backSpeed: 80,
             backDelay: 4000,
