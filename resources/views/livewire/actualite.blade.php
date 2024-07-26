@@ -2,7 +2,7 @@
    <!-- Testimonials Section -->
    <section id="testimonials" class="testimonials section">
     <div class="container section-title" data-aos="fade-up">
-        <h2>Nos Annonces</h2>
+        <h2>Notre Equipe</h2>
     </div><!-- End Section Title -->
   <div class="container" data-aos="fade-up" data-aos-delay="100">
 

@@ -23,35 +23,14 @@
 
     <!-- Get Started Section -->
     @livewire("service")
+    @livewire("equipe")
     @livewire("produit")
-    @livewire("actualite")
-    {{-- @include("template.portions.service") --}}
-    @include("template.portions.t_contact")
-    <!-- /Get Started Section -->
-
-    <!-- Services Section -->
-    <!-- /Services Section -->
+    @livewire("avis")
 
 
-
-
-    <!-- Features Section -->
-
-    <!-- /Features Section -->
-
-    <!-- Projects Section -->
-    <!-- /Projects Section -->
-
-    <!-- Testimonials Section -->
- 
-    <!-- /Testimonials Section -->
-
-    <!-- Recent Blog Posts Section -->
-
-    <!-- /Recent Blog Posts Section -->
 
   </main>
 
-  @include("template.portions.footer")
+  @livewire("footer")
 
 

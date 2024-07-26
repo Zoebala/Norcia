@@ -27,6 +27,6 @@
             {{ $slot }}
         </main>
 
-        @include("template.portions.footer")
+        @livewire("footer")
     </body>
 </html>

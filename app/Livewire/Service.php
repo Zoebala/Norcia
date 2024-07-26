@@ -10,9 +10,9 @@ class Service extends Component
 
     public $departements="";
 
+
     public function mount(){
         $this->departements=Departement::all();
-        
     }
     public function render()
     {

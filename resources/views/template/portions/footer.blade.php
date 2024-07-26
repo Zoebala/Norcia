@@ -23,33 +23,30 @@
         <div class="col-lg-3 col-md-3 footer-links">
           <h4>Liens Utiles</h4>
           <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About us</a></li>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">Terms of service</a></li>
-            <li><a href="#">Privacy policy</a></li>
+            <li><a href="{{ route("home") }}" class="{{ Route::is("home") ? 'active':' '; }}">Accueil</a></li>
+            <li><a href="{{ route("apropos") }}" class="{{ Route::is("apropos") ? 'active':' '; }}">Apropos</a></li>
+            <li><a href="{{ route("service") }}" class="{{ Route::is("service") ? 'active':' '; }}">Services</a></li>
+            <li><a href="{{ route("produit") }}" class="{{ Route::is("produit") ? 'active':' '; }}">Produits</a></li>
           </ul>
         </div>
 
         <div class="col-lg-3 col-md-3 footer-links">
           <h4>Nos Services</h4>
           <ul>
-            <li><a href="#">Web Design</a></li>
-            <li><a href="#">Web Development</a></li>
-            <li><a href="#">Product Management</a></li>
-            <li><a href="#">Marketing</a></li>
-            <li><a href="#">Graphic Design</a></li>
+            @foreach ($services as $service)
+                <li><a href="#">{{ $service->lib }}</a></li>
+
+            @endforeach
+
           </ul>
         </div>
 
         <div class="col-lg-2 col-md-3 footer-links">
           <h4>Nos Opérations</h4>
           <ul>
-            <li><a href="#">Molestiae accusamus iure</a></li>
-            <li><a href="#">Excepturi dignissimos</a></li>
-            <li><a href="#">Suscipit distinctio</a></li>
-            <li><a href="#">Dilecta</a></li>
-            <li><a href="#">Sit quas consectetur</a></li>
+            <li><a href="#">Commander</a></li>
+            <li><a href="#">S'identifier</a></li>
+            <li><a href="#">Se Connecter</a></li>
           </ul>
         </div>
 

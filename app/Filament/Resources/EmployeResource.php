@@ -105,7 +105,11 @@ class EmployeResource extends Resource
                                             ->description("Uploader votre profil ici!")
                                             ->schema([
                                                 // SpatieMediaLibraryFileUpload::make("photo"),
-                                                FileUpload::make("photo")->disk("public")->directory("photos"),
+                                                FileUpload::make("photo")
+                                                ->openable()
+                                                ->downloadable()
+                                                ->disk("public")
+                                                ->directory("photos"),
                                                 DatePicker::make('datenais')
                                                     ->label("Date de naissance")
                                                     ->hidden(fn(Get $get):bool => !filled($get("genre")))
@@ -139,6 +143,7 @@ class EmployeResource extends Resource
                                             ->maxLength(255),
                                         Select::make('province')
                                             ->label("Province de Naissance")
+                                            ->searchable()
                                             ->options([
                                                 "kongo Central"=>"kongo Central",
                                                 "kinshasa"=>"kinshasa",
