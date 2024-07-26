@@ -72,6 +72,7 @@ class ListPointventes extends ListRecords
                     ->success()
                      ->duration(5000)
                     ->send();
+                    return redirect()->route("filament.admin.resources.pointventes.index");
 
                 });
 

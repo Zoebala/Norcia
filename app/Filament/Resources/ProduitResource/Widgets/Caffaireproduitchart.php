@@ -32,6 +32,8 @@ class Caffaireproduitchart extends ChartWidget
 
             $EffectifparProduit[]=Produit::join("elementssorties","elementssorties.produit_id","produits.id")
                                           ->join("sorties","sorties.id","elementssorties.sortie_id")
+                                          ->join("annees","annees.id","produits.annee_id")
+                                          ->where("produits.annee_id",session('Annee_id') ?? 1)
                                           ->whereProduit_id($index)->sum("elementssorties.total");
         }
 

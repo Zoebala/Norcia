@@ -72,6 +72,7 @@ class ListStocks extends ListRecords
                     ->success()
                      ->duration(5000)
                     ->send();
+                    return redirect()->route("filament.admin.resources.stocks.index");
 
                 });
 
