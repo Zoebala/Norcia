@@ -24,7 +24,7 @@
 
                 <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-{{ $produit->Depart_id }}">
                     <div class="portfolio-content h-100">
-                    <img src="{{'storage/'.$produit->ProdPhoto }}" style="width:100%; height:400px;" class="img-fluid rounded" alt="{{$produit->Produit }}">
+                    <img src="{{'storage/'.$produit->ProdPhoto }}" style="width:100%; height:310px;" class="img-fluid rounded" alt="{{$produit->Produit }}">
                     <div class="portfolio-info">
                         <h4>{{ $produit->Produit }}</h4>
                         <p>Lorem ipsum, dolor sit amet consectetur</p>
