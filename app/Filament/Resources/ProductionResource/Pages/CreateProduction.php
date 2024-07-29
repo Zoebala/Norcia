@@ -31,6 +31,8 @@ class CreateProduction extends CreateRecord
         $Produit->qte +=$data["qte"];
         $Produit->update();
 
+        $data["annee_id"]=session("Annee_id")[0];
+        
         return $data;
     }
 }

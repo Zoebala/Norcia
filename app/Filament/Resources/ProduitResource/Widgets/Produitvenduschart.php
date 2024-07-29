@@ -33,7 +33,7 @@ class Produitvenduschart extends ChartWidget
 
             $EffectifparDepartement[]=Sortie::join("departements","departements.id","sorties.departement_id")
                                             ->join("annees","annees.id","sorties.annee_id")
-                                            ->where("annees.id",session('Annee_id') ?? 1)
+                                            ->where("annees.id",session('Annee_id')[0] ?? 1)
                                             ->where("departements.id",$index)
                                             ->count();
         }

@@ -27,11 +27,7 @@ class ListDepartements extends ListRecords
     {
         return Action::make("Annee")
                 ->modalHeading("Définition de l'année de travail")
-                ->visible(function(){
-                    if(session('Annee_id')==NULL && session('Annee')==NULL){
-                        return true;
-                    }
-                })
+                ->visible(fn():bool => session('Annee_id')==NULL)
                 ->form([
                     Select::make("annee")
                     ->label("Choix de l'année")
@@ -98,10 +94,10 @@ class ListDepartements extends ListRecords
                 "$Annee->lib"=>Tab::make()
                 ->modifyQueryUsing(function(Builder $query)
                 {
-                $query->where("annee_id",session("Annee_id") ?? 1);
+                $query->where("annee_id",session("Annee_id")[0] ?? 1);
 
                 })->badge(Departement::query()
-                ->where("annee_id",session("Annee_id") ?? 1)->count())
+                ->where("annee_id",session("Annee_id")[0] ?? 1)->count())
                 ->icon("heroicon-o-calendar-days"),
                 'Tous'=>Tab::make()
                 ->badge(Departement::query()->count()),

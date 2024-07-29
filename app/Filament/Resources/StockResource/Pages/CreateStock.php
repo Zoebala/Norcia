@@ -20,9 +20,9 @@ class CreateStock extends CreateRecord
         return "Stockage/Ravitaillement effectué avec succès!";
     }
 
-    // protected function mutateFormDataBeforeCreate(array $data):array
-    // {
-    //     dd(session("vendeur_id")[0]);
-    //     return $data;
-    // }
+    protected function mutateFormDataBeforeCreate(array $data):array
+    {
+        $data["annee_id"]=(int) session("Annee_id")[0];
+        return $data;
+    }
 }

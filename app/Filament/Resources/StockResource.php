@@ -57,17 +57,11 @@ class StockResource extends Resource
                 Section::make("Définition des Stock")
                 ->icon("heroicon-o-circle-stack")
                 ->schema([
-                    Select::make('annee_id')
-                        ->label("Année")
-                        ->options(Annee::whereId(session("Annee_id") ?? 1)->pluck("lib","id"))
-                        ->live()
-                        ->preload()
-                        ->searchable()
-                        ->required(),
+
                     Select::make('departement_id')
                         ->label("Département")
                         ->options(function(Get $get){
-                            return Departement::whereAnnee_id($get("annee_id"))
+                            return Departement::whereAnnee_id(session("Annee_id")[0] ?? 1)
                                               ->whereActif(1)
                                               ->pluck("lib","id");
                         })
@@ -231,7 +225,7 @@ class StockResource extends Resource
                             // return $data;
                        })
                         ->columnSpanFull()->columns(3),
-                ])->columns(3),
+                ])->columns(2),
             ]);
     }
 
@@ -259,7 +253,8 @@ class StockResource extends Resource
                     ->dateTime("d/m/Y à H:i:s")
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])->defaultSort('stocks.created_at', 'desc')
+            ])
+            ->defaultSort('stocks.created_at', 'asc')
             ->filters([
                 //
             ])

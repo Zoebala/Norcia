@@ -39,7 +39,7 @@ class PresenceResource extends Resource
     }
     public static function getNavigationBadge():string
     {
-        return static::getModel()::where("annee_id",session("Annee_id")?? 1)
+        return static::getModel()::where("annee_id",session("Annee_id")[0] ?? 1)
                                 ->whereRaw("Date(presences.created_at)=DATE(now())")->count();
     }
 

@@ -57,13 +57,7 @@ class SortieResource extends Resource
                 ->icon("heroicon-o-truck")
                 ->schema([
 
-                    Forms\Components\Select::make('annee_id')
-                        ->label("Année")
-                        ->options(Annee::whereId(session("Annee_id")?? 1)->pluck("lib","id"))
-                        ->preload()
-                        ->live()
-                        ->searchable()
-                        ->required(),
+
                     Forms\Components\Select::make('departement_id')
                         ->label("Département")
                         ->live()
@@ -71,7 +65,7 @@ class SortieResource extends Resource
 
                             return Departement::join("avoirs","departements.id","avoirs.departement_id")
                                                 ->join("fournisseurs","fournisseurs.id","avoirs.fournisseur_id")
-                                                ->whereAnnee_id($get("annee_id"))->whereActif(1)->pluck("departements.lib","departements.id");
+                                                ->whereAnnee_id(session("Annee_id")[0] ?? 1)->whereActif(1)->pluck("departements.lib","departements.id");
 
                         })
                         ->preload()
@@ -228,7 +222,7 @@ class SortieResource extends Resource
                             return $data;
                     })->columnSpanFull()
                     ->columns(3),
-                ])->columns(3)
+                ])->columns(2)
             ]);
     }
 

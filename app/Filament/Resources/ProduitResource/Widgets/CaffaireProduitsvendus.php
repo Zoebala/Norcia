@@ -34,7 +34,7 @@ class CaffaireProduitsvendus extends ChartWidget
             $EffectifparDepartement[]=Sortie::join("departements","departements.id","sorties.departement_id")
                                             ->join("elementssorties","elementssorties.sortie_id","sorties.id")
                                             ->join("annees","annees.id","sorties.annee_id")
-                                            ->where("sorties.annee_id",session('Annee_id') ?? 1)
+                                            ->where("sorties.annee_id",session('Annee_id')[0] ?? 1)
                                             ->where("departements.id",$index)
                                             ->sum("elementssorties.total");
         }

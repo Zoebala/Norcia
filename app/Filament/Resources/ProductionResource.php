@@ -37,7 +37,7 @@ class ProductionResource extends Resource
     }
     public static function getNavigationBadge():string
     {
-        return static::getModel()::where("annee_id",session("Annee_id")?? 1)
+        return static::getModel()::where("annee_id",session("Annee_id")[0] ?? 1)
                                   ->whereRaw("Date(productions.created_at)=DATE(now())")->count();
     }
     protected static ?int $navigationSort = 70;
@@ -86,13 +86,7 @@ class ProductionResource extends Resource
                                     return true;
                                 }
                     })->disabled() ->columnSpanFull(),
-                    Select::make('annee_id')
-                        ->label("Année")
-                        ->required()
-                        ->options(Annee::whereId(session("Annee_id")??1)->pluck("lib","id"))
-                        ->live()
-                        ->preload()
-                        ->searchable(),
+
                     Select::make('departement_id')
                         ->label("Département")
                         ->required()
@@ -100,7 +94,7 @@ class ProductionResource extends Resource
                         ->options(function(Get $get){
                             return Departement::join("avoirs","departements.id","avoirs.departement_id")
                                                 ->join("fournisseurs","fournisseurs.id","avoirs.fournisseur_id")
-                                                ->whereAnnee_id($get("annee_id"))->whereActif(1)->pluck("departements.lib","departements.id");
+                                                ->whereAnnee_id(session("Annee_id")[0] ?? 1)->whereActif(1)->pluck("departements.lib","departements.id");
                         })->preload()
                         ->searchable(),
                     Select::make('produit_id')
@@ -110,7 +104,8 @@ class ProductionResource extends Resource
                             return Produit::whereDepartement_id($get("departement_id"))->whereActif(1)->pluck("lib","id");
                         })->preload()
                         ->live()
-                        ->afterStateUpdated(function($state){
+                        ->afterStateUpdated(function($state,Set $set){
+                            $set("qte",null);
                             if(session("produit_id") == null){
                                 session()->push("produit_id",$state);
                             }else{
@@ -226,7 +221,7 @@ class ProductionResource extends Resource
                         })
                     ->columns(2)->columnSpanFull(),
 
-                ])->columns(2)
+                ])->columns(3)
             ]);
     }
 

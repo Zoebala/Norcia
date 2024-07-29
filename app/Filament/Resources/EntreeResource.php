@@ -54,17 +54,11 @@ class EntreeResource extends Resource
                     Section::make("Ajout Entrée")
                     ->icon("heroicon-o-shopping-cart")
                     ->schema([
-                        Forms\Components\Select::make('annee_id')
-                                ->label("Année")
-                                ->required()
-                                ->options(Annee::whereId(session("Annee_id") ??1)->pluck("lib","id"))
-                                ->preload()
-                                ->searchable()
-                                ->live(),
+
                         Forms\Components\Select::make('departement_id')
                                     ->label("Departement")
                                     ->options(function(Get $get){
-                                        return Departement::where("annee_id",$get("annee_id"))->pluck("lib","id");
+                                        return Departement::where("annee_id",session("Annee_id")[0] ?? 1)->pluck("lib","id");
                                     })
                                     ->preload()
                                     ->searchable()
@@ -105,7 +99,7 @@ class EntreeResource extends Resource
                                     ->label("Produit")
                                     ->options(function(Get $get){
                                         return Produit::where("departement_id",$get("departement_id"))
-                                                        ->where("annee_id",$get("annee_id"))
+                                                        ->where("annee_id",session("Annee_id")[0])
                                                         ->whereActif(1)
                                                         ->pluck("lib","id");
                                     })->preload()
@@ -184,7 +178,7 @@ class EntreeResource extends Resource
                         })
                         ->columnSpanFull()->columns(3),
 
-                    ])->columns(2)
+                    ])->columns(3)
 
             ]);
     }
@@ -196,7 +190,8 @@ class EntreeResource extends Resource
                 Tables\Columns\TextColumn::make('annee.lib')
                     ->label("Année")
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('departement.lib')
                         ->label("Departement")
                         ->searchable()

@@ -15,7 +15,7 @@ class StatProduitAdmin extends BaseWidget
     {
         return [
             Stat::make("Cumul Sorties", Sortie::join("elementssorties","elementssorties.sortie_id","sorties.id")
-                                                ->where("annee_id",session("Annee_id")?? 1)->count())
+                                                ->where("annee_id",session("Annee_id")[0] ?? 1)->count())
             ->description("Cumul Nombre de Sorties")
             ->color("success")
             ->chart([34,2,5,23])
@@ -27,7 +27,7 @@ class StatProduitAdmin extends BaseWidget
             ->Icon("heroicon-o-shopping-bag"),
             Stat::make("Cumul Chiffre d'affaires",Sortie::join("departements","departements.id","sorties.departement_id")
                                                          ->join("elementssorties","elementssorties.sortie_id","sorties.id")
-                                                        ->where("sorties.annee_id",session("Annee_id")?? 1)
+                                                        ->where("sorties.annee_id",session("Annee_id")[0] ?? 1)
                                                         ->SUM("elementssorties.total")." FC")
             ->description("Cumul Chiffre d'affaires")
             ->color("success")

@@ -37,8 +37,10 @@ class Stock extends Model
     {
         return $this->hasMany(Elementsstock::class);
     }
+
     public function elementsstockdates(): HasMany
     {
         return $this->hasMany(Elementsstockdate::class);
     }
+    
 }

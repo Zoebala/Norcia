@@ -20,4 +20,9 @@ class CreateEntree extends CreateRecord
         return "Entrée effectuée avec succès!";
     }
 
+    protected function mutateFormDataBeforeCreate(array $data):array
+    {
+        $data["annee_id"]=(int) session("Annee_id")[0];
+        return $data;
+    }
 }
