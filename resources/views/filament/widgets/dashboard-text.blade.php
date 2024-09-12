@@ -9,7 +9,7 @@
         </div>
         <h3>{{ session("Annee")[0]." - ".session("Annee")[0]+1 }}</h3>
     @else
-        <h1 style="color:rgb(136, 60, 60); font-style:italic; text-align:center;">Veuillez choisir une année Académique </h1>
+        <h1 style="color:rgb(136, 60, 60); font-style:italic; text-align:center;">Veuillez choisir une Année de Travail </h1>
 
     @endif
     </x-filament::section>
