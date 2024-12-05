@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ClientResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ClientResource\RelationManagers;
+use App\Models\Annee;
 
 class ClientResource extends Resource
 {
@@ -30,6 +31,19 @@ class ClientResource extends Resource
     public static function getNavigationBadgeColor():string
     {
         return "success";
+    }
+
+    public static function canAccess(): bool
+    {
+        if(self::canViewAny()){
+            return Annee::isActive();
+        }
+        return false;
+    }
+
+    public static function canViewAny(): bool
+    {
+        return static::can('viewAny');
     }
 
 

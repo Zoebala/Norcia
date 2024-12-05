@@ -23,6 +23,7 @@ use Filament\Forms\Components\DateTimePicker;
 use App\Filament\Resources\PresenceResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PresenceResource\RelationManagers;
+use App\Models\Annee;
 
 class PresenceResource extends Resource
 {
@@ -41,6 +42,19 @@ class PresenceResource extends Resource
     {
         return static::getModel()::where("annee_id",session("Annee_id")[0] ?? 1)
                                 ->whereRaw("Date(presences.created_at)=DATE(now())")->count();
+    }
+
+    public static function canAccess(): bool
+    {
+        if(self::canViewAny()){
+            return Annee::isActive();
+        }
+        return false;
+    }
+
+    public static function canViewAny(): bool
+    {
+        return static::can('viewAny');
     }
 
     public static function form(Form $form): Form

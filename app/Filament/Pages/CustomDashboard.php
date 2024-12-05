@@ -6,15 +6,21 @@ use App\Models\Annee;
 use Filament\Forms\Set;
 use Filament\Pages\Page;
 use Filament\Actions\Action;
+use Filament\Forms\Components\DatePicker;
 use Filament\Pages\Dashboard;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Notifications\Notification;
+use Filament\Pages\Dashboard\Concerns\HasFiltersForm;
 
 class CustomDashboard extends Dashboard
 {
 
+    use HasFiltersForm;
 
 
     protected function getHeaderActions():array
@@ -135,5 +141,41 @@ class CustomDashboard extends Dashboard
 
         });
 
+    }
+
+
+    public function filtersForm(Form $form): Form
+    {
+        return $form->schema([
+            Section::make()
+                ->description("Filtrez vos données ici!")
+                ->icon("heroicon-m-funnel")
+                ->schema([
+
+                        DatePicker::make("debut")
+                            ->label("Date Début")
+                            ->live()
+                            ->afterStateUpdated(function($state, Set $set,Get $get){
+                                if($state>$get("fin")){
+                                    $set("fin",null);
+                                }
+
+                                if($state>today()){
+                                    $set("debut",today());
+
+                                    Notification::make()
+                                        ->title("la date définie est supérieure à la date d'aujourd'hui")
+                                        ->warning()
+                                        ->send();
+                                }
+                            })
+                            ->default(today()),
+                        DatePicker::make("fin")
+                            ->label("Date Fin"),
+
+
+
+                ])->columns(2),
+        ]);
     }
 }

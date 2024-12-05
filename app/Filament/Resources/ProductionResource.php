@@ -35,6 +35,20 @@ class ProductionResource extends Resource
     {
         return "success";
     }
+
+    public static function canAccess(): bool
+    {
+        if(self::canViewAny()){
+            return Annee::isActive();
+        }
+        return false;
+    }
+
+    public static function canViewAny(): bool
+    {
+        return static::can('viewAny');
+    }
+    
     public static function getNavigationBadge():string
     {
         return static::getModel()::where("annee_id",session("Annee_id")[0] ?? 1)

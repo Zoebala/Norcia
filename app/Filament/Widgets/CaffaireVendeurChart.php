@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Annee;
 use App\Models\Sortie;
 use App\Models\Vendeur;
 use Filament\Widgets\ChartWidget;
@@ -13,15 +14,12 @@ class CaffaireVendeurChart extends ChartWidget
     protected static ?int $sort = 40;
     public static function canView(): bool
     {
-        // Votre logique de contrôle d'accès ici
         if(Auth()->user()->hasRole(["Admin","PDG","DCom"])){
-
-            return true; // ou false selon vos besoins
-        }else{
-
-            return false;
+            return Annee::isActive();
         }
+        return false;
     }
+
 
     protected function getData(): array
     {

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Annee;
 use App\Models\Entree;
 use App\Models\Sortie;
 use App\Models\Employe;
@@ -87,5 +88,13 @@ class StatAdminOverview extends BaseWidget
     public function getColumns(): int
     {
         return 3;
+    }
+
+    public static function canView(): bool
+    {
+        if(Auth()->user()->hasRole(["Admin"])){
+            return Annee::isActive();
+        }
+        return false;
     }
 }

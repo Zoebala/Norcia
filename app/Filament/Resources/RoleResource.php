@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\RoleResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\RoleResource\RelationManagers;
+use App\Models\Annee;
 
 class RoleResource extends Resource
 {
@@ -33,6 +34,19 @@ class RoleResource extends Resource
     public static function getNavigationBadgeColor():string
     {
         return "success";
+    }
+
+    public static function canAccess(): bool
+    {
+        if(self::canViewAny()){
+            return Annee::isActive();
+        }
+        return false;
+    }
+
+    public static function canViewAny(): bool
+    {
+        return static::can('viewAny');
     }
 
     public static function form(Form $form): Form

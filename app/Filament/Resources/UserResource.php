@@ -20,6 +20,7 @@ use App\Filament\Resources\UserResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\UserResource\Pages\CreateUser;
 use App\Filament\Resources\UserResource\RelationManagers;
+use App\Models\Annee;
 
 class UserResource extends Resource
 {
@@ -44,6 +45,19 @@ class UserResource extends Resource
     public static function getNavigationBadgeColor():string
     {
         return "success";
+    }
+
+    public static function canAccess(): bool
+    {
+        if(self::canViewAny()){
+            return Annee::isActive();
+        }
+        return false;
+    }
+
+    public static function canViewAny(): bool
+    {
+        return static::can('viewAny');
     }
 
     public static function form(Form $form): Form

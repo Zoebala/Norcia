@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Annee;
 use App\Models\Sortie;
 use App\Models\Departement;
 use Filament\Widgets\ChartWidget;
@@ -11,16 +12,15 @@ class CaffaireDepartementChart extends ChartWidget
     protected static ?string $heading = 'Chiffre d\'Affaires journalières par Département';
     protected static bool $isLazy = false;
     protected static ?int $sort = 20;
+
+
+
     public static function canView(): bool
     {
-        // Votre logique de contrôle d'accès ici
         if(Auth()->user()->hasRole(["Admin","PDG","DCom"])){
-
-            return true; // ou false selon vos besoins
-        }else{
-
-            return false;
+            return Annee::isActive();
         }
+        return false;
     }
 
     protected function getData(): array

@@ -46,6 +46,20 @@ class DepartementResource extends Resource
         return "success";
     }
 
+    public static function canAccess(): bool
+    {
+        if(self::canViewAny()){
+            return Annee::isActive();
+        }
+        return false;
+    }
+
+    public static function canViewAny(): bool
+    {
+        return static::can('viewAny');
+    }
+
+
 
     public static function form(Form $form): Form
     {

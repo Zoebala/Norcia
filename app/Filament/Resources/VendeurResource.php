@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\VendeurResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\VendeurResource\RelationManagers;
+use App\Models\Annee;
 
 class VendeurResource extends Resource
 {
@@ -39,6 +40,19 @@ class VendeurResource extends Resource
     public static function getNavigationBadgeColor():string
     {
         return "success";
+    }
+
+    public static function canAccess(): bool
+    {
+        if(self::canViewAny()){
+            return Annee::isActive();
+        }
+        return false;
+    }
+
+    public static function canViewAny(): bool
+    {
+        return static::can('viewAny');
     }
 
 
