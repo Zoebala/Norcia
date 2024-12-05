@@ -23,7 +23,7 @@
 
     <!-- Get Started Section -->
     @livewire("service")
-    @livewire("equipe")
+    {{-- @livewire("equipe") --}}
     @livewire("produit")
     @livewire("avis")
 
